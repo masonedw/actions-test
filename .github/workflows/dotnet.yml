@@ -2,13 +2,13 @@ name: CI Test
 on:
   push:
     paths:
-      - "Apps/Blind-Config-Tool"
+      - 'Apps/Blind-Config-Tool/**'
     branches:
       - main
       
   pull_request:
       paths:
-        - "Apps/Blind-Config-Tool"
+        - 'Apps/Blind-Config-Tool/**'
       branches:
         - main
 

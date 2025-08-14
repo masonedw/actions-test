@@ -1,7 +1,12 @@
 name: CI Test
 on:
   push:
+    paths:
+      - "Apps/Blind-Config-Tool"
     branches:
+      - main
+  pull_request:
+    branches: 
       - main
 
 
@@ -10,19 +15,16 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v5
     
     - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1
+      uses: microsoft/setup-msbuild@v2
     
     - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.5
-      
-    - name: setup-msbuild
-      uses: microsoft/setup-msbuild@v1.1
+      uses: NuGet/setup-nuget@v2
     
     - name: Restore Packages
-      run: nuget restore WpfApp1/WpfApp1.sln
+      run: nuget restore "Apps/Blind-Config-Tool/Blind Config Tool.sln"
     
     - name: Build solution
-      run: msbuild WpfApp1/WpfApp1.sln -t:rebuild -property:Configuration=Release
+      run: msbuild "Apps/Blind-Config-Tool/Blind Config Tool.sln" -t:rebuild -property:Configuration=Release

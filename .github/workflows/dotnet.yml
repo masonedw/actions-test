@@ -5,9 +5,12 @@ on:
       - "Apps/Blind-Config-Tool"
     branches:
       - main
+      
   pull_request:
-    branches: 
-      - main
+      paths:
+        - "Apps/Blind-Config-Tool"
+      branches:
+        - main
 
 
 jobs:

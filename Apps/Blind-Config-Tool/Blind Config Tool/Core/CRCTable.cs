@@ -8,7 +8,7 @@ namespace Blind_Config_Tool.Core
 {
     public static class CRCTable
     {
-        public static readonly ushort[] crc16CcittTable = new ushort[256]
+        public static readonly UInt16[] crc16CcittTable = new UInt16[256]
         {
             0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50A5, 0x60C6, 0x70E7,
             0x8108, 0x9129, 0xA14A, 0xB16B, 0xC18C, 0xD1AD, 0xE1CE, 0xF1EF,

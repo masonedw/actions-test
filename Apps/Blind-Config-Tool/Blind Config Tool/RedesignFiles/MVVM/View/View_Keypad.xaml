@@ -1,0 +1,688 @@
+﻿<UserControl x:Class="Blind_Config_Tool.RedesignFiles.MVVM.View.View_Keypad"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Blind_Config_Tool.RedesignFiles.MVVM.View"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:ViewModel="clr-namespace:Blind_Config_Tool.RedesignFiles.MVVM.ViewModel"
+             xmlns:Converter="clr-namespace:Blind_Config_Tool.Core.Converters"
+             xmlns:core="clr-namespace:Blind_Config_Tool.Core"
+             d:DataContext="{d:DesignInstance Type=ViewModel:VM_Keypad}"
+             mc:Ignorable="d" 
+             d:DesignHeight="740" 
+             d:DesignWidth="920"
+             Background="#b8bbbf">
+    <UserControl.Resources>
+        <Converter:BooleanToYesOrNoConverter x:Key="BooleanToYesNoConverter"/>
+        <Converter:KeypadButtonActionConverter x:Key="KeypadButtonActionConverter"/>
+        <Converter:TargetMotorConverter x:Key="TargetMotorConverter"/>
+
+        <ObjectDataProvider x:Key="buttonActions"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="core:KeypadButtonAction"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider x:Key="targetMotor"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="core:TargetMotor"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal"
+                    Margin="20,0,0,0">
+            <ComboBox x:Name="KeypadsList"
+                Height="25"
+                Width="200"
+                HorizontalAlignment="Left"
+                      Style="{StaticResource DeviceCombobox_Style}"
+                SelectedIndex="{Binding SelectedKeypad}"
+                ItemsSource="{Binding KeypadList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <Run Text="{Binding NameAsString, Mode=OneWay, TargetNullValue='', FallbackValue='Unnamed Keypad'}"/>
+                            <Run Text="("/>
+                            <Run Text="{Binding AddressAsString, Mode=OneWay, TargetNullValue='##NO ADDRESS##'}"/>
+                            <Run Text=")"/>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <Button Name="SearchForKeypads"
+                    Content="Search"
+                    Height="25"
+                    Width="60"
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    HorizontalAlignment="Left"
+                    Margin="10,0,0,0"
+                    Style="{StaticResource StandardButton_Style}"
+                    Command="{Binding SearchForKeypads}"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    Margin="0,0,20,0"
+                    Grid.Column="1"
+                    HorizontalAlignment="Right">
+
+            <Button Name="LoadFromFile"
+                    Content="Import From Excel"
+                        Height="30" 
+                        Width="130"
+                            Command="{Binding LoadFromFile}"
+                    Style="{StaticResource StandardButton_Style}"/>
+
+            <Button Name="SendToFile"
+                        Height="30" 
+                        Width="130"
+                    Content="Export To Excel"
+                    Margin="10,0,0,0"
+                            Command="{Binding SaveToFile}"
+                    Style="{StaticResource StandardButton_Style}"/>
+        </StackPanel>
+        <!-- SAVING COMMAND SETTINGS -->
+        <Border Style="{StaticResource StandardBorder_Style}"
+                Grid.Column="0"
+                Grid.Row="1"
+                HorizontalAlignment="Left"
+                Margin="20,0,0,10" 
+                Width="350">
+            <StackPanel Orientation="Vertical"
+                        HorizontalAlignment="Center">
+                
+                <!-- Command Name -->
+                <Label Content="{Binding SelectedButtonName, FallbackValue='No Button Selected'}"
+                       VerticalAlignment="Center"
+                       HorizontalContentAlignment="Center"
+                       VerticalContentAlignment="Center"
+                       FontSize="18"
+                       Margin="0,0,0,0"
+                       />
+
+                <Border Background="Black"
+                        Height="1"
+                        Margin="50,0,50,0"/>
+
+                <StackPanel Orientation="Horizontal"
+                            Margin="0,20,0,0">
+                    
+                    <Label Content="On Press:"
+                           HorizontalAlignment="Left"
+                           HorizontalContentAlignment="Right"
+                           VerticalAlignment="Center"
+                           Width="90"
+                           Margin="0,0,0,0"/>
+
+                    <ComboBox x:Name="OnPressActionComboBox"
+                              Height="25"
+                              Width="130"
+                              Style="{StaticResource StandardCombobox_Style}"
+                              ItemsSource="{Binding Source={StaticResource buttonActions}}"
+                              SelectedValue="{Binding CurrentCommandOnPressAction}" 
+                              Margin="0,0,0,0"
+                              SelectionChanged="EnableTargetBox"/>
+
+                    <TextBox x:Name="OnPressTargetValue" 
+                             Text="{Binding CurrentCommandOnPressTarget, UpdateSourceTrigger=PropertyChanged}"
+                             Height="25"
+                             Width="50"
+                             Style="{StaticResource StandardTextbox_Style}"
+                             HorizontalAlignment="Left"
+                             Margin="10,0,20,0"
+                             MaxLength="5"
+                             LostFocus="CheckMinMax"
+                             PreviewKeyDown="NoSpace"
+                             PreviewTextInput="OnlyNumeric"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            Margin="0,20,0,0">
+                    <Label Content="On Hold:"
+                           HorizontalAlignment="Left"
+                           HorizontalContentAlignment="Right"
+                           VerticalAlignment="Center"
+                           Width="90"
+                        Margin="0,0,0,0"/>
+
+                    <ComboBox x:Name="OnHoldActionComboBox"
+                              Height="25"
+                              Width="130"
+                              Style="{StaticResource StandardCombobox_Style}"
+                              ItemsSource="{Binding Source={StaticResource buttonActions}}"
+                              SelectedValue="{Binding CurrentCommandOnHoldAction, UpdateSourceTrigger=PropertyChanged}" 
+                              Margin="0,0,0,0"
+                              SelectionChanged="EnableTargetBox"/>
+
+                    <TextBox x:Name="OnHoldTargetValue"
+                             Text="{Binding CurrentCommandOnHoldTarget}"
+                             Style="{StaticResource StandardTextbox_Style}"
+                             Height="25"
+                             Width="50"
+                             HorizontalAlignment="Left"
+                             Margin="10,0,20,0"
+                             MaxLength="5"
+                             LostFocus="CheckMinMax"
+                             PreviewKeyDown="NoSpace"
+                             PreviewTextInput="OnlyNumeric"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            Margin="0,20,0,0">
+                    <Label Content="On Release:"
+                        HorizontalAlignment="Left"
+                           HorizontalContentAlignment="Right"
+                        VerticalAlignment="Center"
+                           Width="90"
+                        Margin="0,0,0,0"/>
+
+                    <ComboBox x:Name="OnReleaseActionComboBox"
+                              Height="25"
+                              Width="130"
+                              Grid.Row="2"
+                              Grid.Column="1"
+                              Style="{StaticResource StandardCombobox_Style}"
+                              ItemsSource="{Binding Source={StaticResource buttonActions}}"
+                              SelectedValue="{Binding CurrentCommandOnReleaseAction, UpdateSourceTrigger=PropertyChanged}" 
+                              Margin="0,0,0,0"
+                              SelectionChanged="EnableTargetBox"/>
+
+                    <TextBox x:Name="OnReleaseTargetValue"
+                             Text="{Binding CurrentCommandOnReleaseTarget}"
+                             Style="{StaticResource StandardTextbox_Style}"
+                             Height="25"
+                             Width="50"
+                             Grid.Row="2"
+                             Grid.Column="2" 
+                             Margin="10,0,20,0"
+                             HorizontalAlignment="Left"
+                             MaxLength="5"
+                             LostFocus="CheckMinMax"
+                             PreviewKeyDown="NoSpace"
+                             PreviewTextInput="OnlyNumeric"/>
+                </StackPanel>
+
+                <Border Background="Black"
+                        Height="1"
+                        Margin="50,20,50,0"/>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Margin="0,0,0,0">
+                    <StackPanel Orientation="Vertical"
+                                Margin="0,0,30,0">
+                        <Label Content="Target"
+                            HorizontalAlignment="Center"
+                            Margin="0,0,0,0"
+                            VerticalAlignment="Center"/>
+
+                        <ComboBox x:Name="CurrentCommandTargetType"
+                            Grid.ColumnSpan="2"
+                            Margin="0,0,0,0"
+                            Height="25"
+                            Width="125"
+                            HorizontalAlignment="Center"
+                                  Style="{StaticResource StandardCombobox_Style}"
+                            ItemsSource="{Binding Source={StaticResource targetMotor}}" 
+                            SelectedValue="{Binding CurrentCommandTargetMotor}" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="Address"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+
+                        <TextBox x:Name="CurrentCommandAddressValue"
+                                Text="{Binding CurrentCommandTargetAddress}"
+                                 Style="{StaticResource StandardTextbox_Style}"
+                                Height="25"
+                                Width="65"
+                                MaxLength="6"
+                                CharacterCasing="Upper"
+                                 PreviewTextInput="HexOnly"
+                                 PreviewKeyDown="NoSpace"
+                                 IsEnabled="{Binding TargetAddressEnabled}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            Margin="0,15,0,0">
+                    
+                    <Button Content="Save Command Settings"
+                            Height="30"
+                            Width="160"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Margin="65,0,0,0"
+                            Command="{Binding SaveCommandSettings}"
+                            Style="{StaticResource StandardButton_Style}"/>
+
+                    <Label Content="Done!"
+                           Visibility="{Binding SaveCommandDoneVisibility}"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"/>
+                </StackPanel>
+                
+                <TextBlock Name="SaveButtonConfigErrorMessage"
+                           Text="{Binding ButtonConfigError}"
+                           HorizontalAlignment="Center"
+                           Foreground="Red"
+                           FontSize="15"
+                           Margin="0,5,0,0">
+                    <TextBlock.Background>
+                        <SolidColorBrush Color="Transparent"/>
+                    </TextBlock.Background>
+                </TextBlock>
+            </StackPanel>
+        </Border>
+
+        <!-- SETTING ADDRESSES/DISPLAYING MOTOR ALL ADDRESS -->
+        <Border Style="{StaticResource StandardBorder_Style}"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="70,0,100,10">
+            <StackPanel Orientation="Vertical">
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <StackPanel Orientation="Vertical"
+                                Margin="0,0,0,0">
+                        <Label Content="Keypad Address"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   FontSize="16"
+                                   Margin="20,20,20,10"/>
+
+                        <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Center">
+                            <TextBox Text="{Binding NewKeypadAddress_Part1}"
+                                            Name="NewKeypadAddressTextbox_1"
+                                     Style="{StaticResource StandardTextbox_Style}"
+                                            Width="30"
+                                            Height="30"
+                                            CharacterCasing="Upper"
+                                            MaxLength="2" 
+                                            Margin="5"
+                                            TextAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                            TextChanged="NewKeypadAddressTextbox_1_TextChanged"
+                                            PreviewTextInput="HexOnly"
+                                         PreviewKeyDown="NoSpace"
+                                            GotFocus="SelectAll"
+                                            PreviewMouseDown="HandleMouseDown"/>
+
+                            <Border Background="Black"
+                                        Width="10"
+                                        Height="4"/>
+
+                            <TextBox Text="{Binding NewKeypadAddress_Part2}"
+                                         Name="NewKeypadAddressTextbox_2"
+                                     Style="{StaticResource StandardTextbox_Style}"
+                                         Width="30"
+                                         Height="30"
+                                         CharacterCasing="Upper"
+                                         MaxLength="2" 
+                                         Margin="5"
+                                         TextAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         TextChanged="NewKeypadAddressTextbox_2_TextChanged"
+                                         PreviewTextInput="HexOnly"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"/>
+
+                            <Border Background="Black"
+                                        Width="10"
+                                        Height="4"/>
+
+                            <TextBox Text="{Binding NewKeypadAddress_Part3}"
+                                            Name="NewKeypadAddressTextbox_3"
+                                     Style="{StaticResource StandardTextbox_Style}"
+                                            Width="30"
+                                            Height="30"
+                                            CharacterCasing="Upper"
+                                            MaxLength="2" 
+                                            Margin="5"
+                                            TextAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                            TextChanged="NewKeypadAddressTextbox_3_TextChanged"
+                                            PreviewTextInput="HexOnly"
+                                         PreviewKeyDown="NoSpace"
+                                            GotFocus="SelectAll"
+                                            PreviewMouseDown="HandleMouseDown"/>
+                        </StackPanel>
+
+                        <Button Content="Set Keypad Address"
+                                    Name="SetNewKeypadAddressButton"
+                                    Width="140"
+                                    Height="30"
+                                    Margin="20,20,20,0"
+                                Style="{StaticResource StandardButton_Style}"
+                                    Command="{Binding SetNewKeypadAddress}"/>
+
+                        <TextBlock Name="KeypadAddressErrorMessage"
+                                   Text="{Binding KeypadAddressError}"
+                                   HorizontalAlignment="Center"
+                                   Foreground="Red"
+                                   FontSize="15"
+                                       Margin="0,5,0,5">
+                            <TextBlock.Background>
+                                <SolidColorBrush Color="Transparent"/>
+                            </TextBlock.Background>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <Border Background="Black"
+                            Width="1"
+                            Margin="0,30,0,30"
+                            Visibility="Collapsed"/>
+
+                    <StackPanel Orientation="Vertical"
+                                Margin="10,0,0,0"
+                                Visibility="Collapsed">
+                        <Label Content="'Motor All' Address"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    FontSize="16"
+                                    Margin="0,20,0,10"/>
+
+                        <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Center">
+                            <TextBox Text="{Binding NewMotorAllAddress_Part1}"
+                                         x:Name="NewMotorAllAddressTextbox_1"
+                                         Width="30"
+                                         Height="30"
+                                         CharacterCasing="Upper"
+                                         MaxLength="2" 
+                                         Margin="5"
+                                         TextAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         TextChanged="NewMotorAllAddressTextbox_1_TextChanged"
+                                         PreviewTextInput="HexOnly"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"/>
+
+                            <Border Background="Black"
+                                        Width="10"
+                                        Height="4"/>
+
+                            <TextBox Text="{Binding NewMotorAllAddress_Part2}"
+                                         x:Name="NewMotorAllAddressTextbox_2"
+                                         Width="30"
+                                         Height="30"
+                                         CharacterCasing="Upper"
+                                         MaxLength="2" 
+                                         Margin="5"
+                                         TextAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         TextChanged="NewMotorAllAddressTextbox_2_TextChanged"
+                                         PreviewTextInput="HexOnly"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"/>
+
+                            <Border Background="Black"
+                                        Width="10"
+                                        Height="4"/>
+
+                            <TextBox Text="{Binding NewMotorAllAddress_Part3}"
+                                         x:Name="NewMotorAllAddressTextbox_3"
+                                         Width="30"
+                                         Height="30"
+                                         CharacterCasing="Upper"
+                                         MaxLength="2" 
+                                         Margin="5"
+                                         TextAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         TextChanged="NewMotorAllAddressTextbox_3_TextChanged"
+                                         PreviewTextInput="HexOnly"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"/>
+                        </StackPanel>
+
+                        <Button Content="Set 'Motor All' Address"
+                                    x:Name="SetMotorAllAddressButton"
+                                    Width="140"
+                                    Height="30"
+                                    Margin="20,20,20,0"
+                                    Command="{Binding SetMotorAllAddress}"/>
+
+                        <TextBlock Name="MotorAllAddressErrorMessage"
+                                   Text="{Binding MotorAllError}"
+                                   HorizontalAlignment="Center"
+                                   Foreground="Red"
+                                   FontSize="15"
+                                       Margin="0,5,0,5">
+                            <TextBlock.Background>
+                                <SolidColorBrush Color="Transparent"/>
+                            </TextBlock.Background>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
+                <Border Background="Black"
+                        Height="1"
+                        Margin="70,0,70,0"/>
+
+                <Label Content="{Binding MotorAllTitle, FallbackValue='Motor All Address: FF-FF-FF'}"
+                   FontWeight="Bold"
+                   FontSize="14"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="0,5,0,0"/>
+
+                <Border Background="Black"
+                        Height="1"
+                        Margin="70,5,70,0"/>
+                
+                <StackPanel Orientation="Vertical"
+                            Margin="0,5,0,0">
+                    <Label Content="Keypad Name"
+                           FontSize="16"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"/>
+
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,0,0,0"
+                                HorizontalAlignment="Center">
+                        <TextBox Height="25"
+                                 Width="125"
+                                 VerticalContentAlignment="Center"
+                                 Style="{StaticResource StandardTextbox_Style}"
+                                 Text="{Binding KeypadName}"
+                                 MaxLength="16"
+                                 PreviewTextInput="OnlyAlphanumeric"
+                                 PreviewKeyDown="NoDecimal"
+                                 Margin="0,0,0,0"/>
+                        <Button Content="Save"
+                                Height="25"
+                                Width="60"
+                                Margin="10,0,0,0"
+                                Style="{StaticResource StandardButton_Style}"
+                                Command="{Binding SetKeypadName}"/>
+                    </StackPanel>
+                    <TextBlock Name="SetNameErrorMessage"
+                                   Text="{Binding SetNameError}"
+                                   HorizontalAlignment="Center"
+                                   Foreground="Red"
+                                   FontSize="15"
+                                       Margin="0,5,0,5">
+                        <TextBlock.Background>
+                            <SolidColorBrush Color="Transparent"/>
+                        </TextBlock.Background>
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- CHOOSING NUMBER OF COMMANDS IN LIST -->
+        <ComboBox x:Name="DeviceTypeComboBox"
+                    HorizontalAlignment="Left"
+                  VerticalContentAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    Width="200"
+                    Height="30"
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Margin="20,0,0,0"
+                    Style="{StaticResource List_Combobox_Style}"
+                    SelectedIndex="{Binding DeviceTypeIndex}"
+                    ItemsSource="{Binding DeviceTypesList}"/>
+
+        <!-- LOADING/UPLOADING COMMANDS -->
+        <StackPanel Orientation="Horizontal"
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="0,0,20,0"
+                HorizontalAlignment="Right">
+            <Border BorderBrush="Black"
+                    Grid.Row="2"
+                    BorderThickness="4,4,4,0"
+                    Grid.Column="1"
+                    Margin="0,0,5,0"
+                    CornerRadius="10,10,0,0"
+                    Background="White"
+                    HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource ListButton_Style}"
+                            Background="Transparent"
+                            BorderBrush="Black"
+                            BorderThickness="0,0,1,0"
+                            Content="Download From Device"
+                            Command="{Binding RetrieveCommands}"
+                            FontWeight="Bold"
+                            Width="150"/>
+                </StackPanel>
+            </Border>
+
+            <Border BorderBrush="Black"
+                    Grid.Row="2"
+                    BorderThickness="4,4,4,0"
+                    Grid.Column="1"
+                    Margin="0,0,0,0"
+                    CornerRadius="10,10,0,0"
+                    Background="White"
+                    HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource ListButton_Style}"
+                            BorderBrush="Black"
+                            BorderThickness="1,0,0,0"
+                            Content="Upload To Device"
+                            Command="{Binding UploadCommands}"
+                            Width="150"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+
+        <!-- LIST OF COMMANDS -->
+        <ListView Name="ListOfCommands"
+                  AlternationCount="2"
+                  SelectedIndex="{Binding SelectedCommand}"
+                  ItemsSource="{Binding Commands}"
+                  d:ItemsSource="{d:SampleData ItemCount=100}"
+                  Style="{StaticResource ListView_Style}"                  
+                  SelectionChanged="ListOfCommands_SelectionChanged"
+                  Grid.Row="3"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  Margin="20,0,20,10">
+            <ListView.View>
+                <GridView ColumnHeaderContainerStyle="{DynamicResource CustomHeaderStyle}">
+                    <GridViewColumn Header="#" Width="35" DisplayMemberBinding="{Binding ID}"/>
+                    <GridViewColumn Header="Modified" Width="60" DisplayMemberBinding="{Binding Changed, Converter={StaticResource BooleanToYesNoConverter}}"/>
+                    <GridViewColumn Header="On Press" Width="115" DisplayMemberBinding="{Binding OnPressAction, Converter={StaticResource KeypadButtonActionConverter}}"/>
+                    <GridViewColumn Header="Amount" Width="60" DisplayMemberBinding="{Binding OnPressTarget}"/>
+                    <GridViewColumn Header="On Hold" Width="115" DisplayMemberBinding="{Binding OnHoldAction, Converter={StaticResource KeypadButtonActionConverter}}"/>
+                    <GridViewColumn Header="Amount" Width="60" DisplayMemberBinding="{Binding OnHoldTarget}"/>
+                    <GridViewColumn Header="On Release" Width="115" DisplayMemberBinding="{Binding OnReleaseAction, Converter={StaticResource KeypadButtonActionConverter}}"/>
+                    <GridViewColumn Header="Amount" Width="60" DisplayMemberBinding="{Binding OnReleaseTarget}"/>
+                    <GridViewColumn Header="Target" Width="110" DisplayMemberBinding="{Binding TargetMotor, Converter={StaticResource TargetMotorConverter}}"/>
+                    <GridViewColumn Header="Address" Width="90" DisplayMemberBinding="{Binding TargetAddress}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        
+        <!-- CHOOSE UPLOAD TYPE POPUP -->
+        <Border Background="#BB555555"
+                Grid.Column="0"
+                Grid.Row="0"
+                Grid.RowSpan="4"
+                Grid.ColumnSpan="4"
+                Visibility="{Binding UploadBoxVisibility, FallbackValue=Hidden}">
+            <Grid>
+                <Border BorderBrush="DarkOrange"
+                        BorderThickness="5"
+                        Background="White"
+                        Width="350"
+                        Height="170"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                    <StackPanel Orientation="Vertical"
+                                HorizontalAlignment="Center">
+                        <TextBlock Text="Select Upload Type"
+                                   HorizontalAlignment="Center"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Margin="0,20,0,0"/>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="0,30,0,0">
+                            <Button Content="Upload All"
+                                    Height="30"
+                                    Width="130"
+                                    Style="{StaticResource StandardButton_Style}"
+                                    Command="{Binding UploadAll}"/>
+
+                            <Button Content="Buttons With Values"
+                                    Height="30"
+                                    Width="130"
+                                    Margin="20,0,0,0"
+                                    Style="{StaticResource StandardButton_Style}"
+                                    Command="{Binding UploadWithValues}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="0,10,0,0">
+                            <Button Content="Modified Values Only"
+                                    Height="30"
+                                    Width="130"
+                                    Style="{StaticResource StandardButton_Style}"
+                                    Command="{Binding UploadModifiedOnly}"/>
+
+                            <Button Content="Cancel"
+                                    Height="30"
+                                    Width="130"
+                                    Margin="20,0,0,0"
+                                    Style="{StaticResource StandardButton_Style}"
+                                    Command="{Binding CancelUpload}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

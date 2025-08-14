@@ -1,0 +1,29 @@
+﻿<Application x:Class="Blind_Config_Tool.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:VM="clr-namespace:Blind_Config_Tool.RedesignFiles.MVVM.ViewModel"
+             xmlns:V="clr-namespace:Blind_Config_Tool.RedesignFiles.MVVM.View"
+             StartupUri="View_Main.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type VM:VM_Keypad}">
+                <V:View_Keypad/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type VM:VM_Settings}">
+                <V:View_Settings/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type VM:VM_Motor}">
+                <V:View_Motor/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type VM:VM_MotPage1}">
+                <V:View_MotPage1/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type VM:VM_MotPage2}">
+                <V:View_MotPage2/>
+            </DataTemplate>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Core/Styles/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

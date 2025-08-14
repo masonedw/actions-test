@@ -1,0 +1,20 @@
+﻿FA Blind Config v3.1 (FAP)
+
+
+winexe
+C#
+.cs
+C:\Blind-Config-Tool\Blind Config Tool\obj\Debug\
+Blind_Config_Tool
+none
+false
+DEBUG;TRACE
+C:\Blind-Config-Tool\Blind Config Tool\App.xaml
+62002638767
+
+622009014280
+301256442929
+RedesignFiles\MVVM\View\View_MotPage1.xaml;RedesignFiles\MVVM\View\View_MotPage2.xaml;RedesignFiles\MVVM\View\View_Motor.xaml;RedesignFiles\MVVM\View\View_Keypad.xaml;RedesignFiles\MVVM\View\View_Settings.xaml;View_Main.xaml;
+
+True
+

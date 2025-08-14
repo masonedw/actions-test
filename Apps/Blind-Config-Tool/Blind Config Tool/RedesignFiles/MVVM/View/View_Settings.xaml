@@ -1,0 +1,1238 @@
+﻿<UserControl x:Class="Blind_Config_Tool.RedesignFiles.MVVM.View.View_Settings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Blind_Config_Tool.RedesignFiles.MVVM.View"
+             xmlns:ports="clr-namespace:System.IO.Ports;assembly=System"
+             xmlns:core="clr-namespace:Blind_Config_Tool.Core"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:ViewModel="clr-namespace:Blind_Config_Tool.RedesignFiles.MVVM.ViewModel" 
+             d:DataContext="{d:DesignInstance Type=ViewModel:VM_Settings}"
+             mc:Ignorable="d" 
+             d:DesignHeight="740" 
+             d:DesignWidth="920"
+             Background="#b8bbbf">
+
+    <UserControl.Resources>
+        <ObjectDataProvider ObjectType="{x:Type ports:SerialPort}"
+                            MethodName="GetPortNames" x:Key="portNames">
+        </ObjectDataProvider>
+
+        <ObjectDataProvider x:Key="parityEnum" 
+                            MethodName="GetValues" 
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="core:ParityType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider x:Key="stopBitEnum" 
+                            MethodName="GetValues" 
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="core:StopBitsType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="100*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical"
+                    Grid.Column="0"
+                    Grid.Row="0">
+
+            <Border Style="{StaticResource StandardBorder_Style}"
+                    Width="350"
+                    HorizontalAlignment="Left"
+                    Margin="20,20,20,0"
+                    BorderThickness="2,2,2,0"
+                    CornerRadius="10,10,0,0"
+                    IsEnabled="{Binding CanPerformActions}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80*"/>
+                        <ColumnDefinition Width="100*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="1"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Content="Communication Settings"
+                           Grid.Row="0"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontWeight="Bold"
+                           FontSize="16"/>
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                HorizontalAlignment="Center">
+                        <Label Content="Connection:"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontWeight="Bold"
+                           FontSize="14"/>
+                        <RadioButton Content="Serial"
+                                             GroupName="Comm Settings"
+                                             Height="30"
+                                             Margin="0,0,0,0"
+                                             Style="{StaticResource StandardRadioButton_Style}"
+                                             IsChecked="{Binding CommType_Serial}"
+                                            Command="{Binding SetCommType_Serial}"/>
+                        <RadioButton Content="Ethernet"
+                                             GroupName="Comm Settings"
+                                             Height="30"
+                                             Margin="20,0,0,0"
+                                             Style="{StaticResource StandardRadioButton_Style}"
+                                             IsChecked="{Binding CommType_Ethernet}"
+                                                Command="{Binding SetCommType_Ethernet}"/>
+                    </StackPanel>
+
+                    <Border Background="black"
+                            Grid.Row="2"
+                            Grid.ColumnSpan="2"
+                            Margin="50,0,50,0"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource StandardBorder_Style}"
+                    Width="350"
+                    HorizontalAlignment="Left"
+                    Margin="20,0,20,0"
+                    CornerRadius="0,0,20,20"
+                    BorderThickness="2,0,2,2"
+                    IsEnabled="{Binding CanPerformActions}"
+                    Visibility="{Binding CommType_Serial_Visibility}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80*"/>
+                        <ColumnDefinition Width="100*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="20"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Content="Serial Settings"
+                           Grid.Row="0"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontWeight="Bold"
+                           FontSize="16"/>
+
+                    <!-- COM PORT -->
+                    <Label Content="COM Port:"
+                           HorizontalContentAlignment="Right"
+                           VerticalAlignment="Center"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Grid.Column="0"
+                           Grid.Row="1"/>
+
+                    <ComboBox Height="30"
+                                Width="100"
+                              Grid.Column="1"
+                              Grid.Row="1"
+                              Style="{StaticResource StandardCombobox_Style}"
+                              ItemsSource="{Binding Source={StaticResource portNames}}"
+                              SelectedItem="{Binding SelectedCOMPort}"/>
+
+                    <!-- BAUD RATE -->
+                    <Label Content="Baud Rate:"
+                            HorizontalContentAlignment="Right"
+                           VerticalAlignment="Center"
+                            FontSize="14"
+                            FontWeight="Bold"
+                           Grid.Column="0"
+                           Grid.Row="2"/>
+
+                    <TextBox Height="30"
+                                Width="100"
+                             Grid.Column="1"
+                             Grid.Row="2"
+                             Style="{StaticResource StandardTextbox_Style}"
+                             FontSize="15"
+                             Text="{Binding BaudRate, FallbackValue='9600'}"/>
+
+                    <!-- PARITY -->
+                    <Label Content="Parity:"
+                            HorizontalContentAlignment="Right"
+                           VerticalAlignment="Center"
+                            FontSize="14"
+                            FontWeight="Bold"
+                           Grid.Row="3"
+                           Grid.Column="0"/>
+
+                    <ComboBox Height="30"
+                                Width="100"
+                              Grid.Row="3"
+                              Grid.Column="1"
+                              Style="{StaticResource StandardCombobox_Style}"
+                              ItemsSource="{Binding Source={StaticResource parityEnum}}"
+                              SelectedItem="{Binding ParityType}"
+                              SelectedIndex="1"/>
+
+                    <!-- STOP BITS -->
+                    <Label Content="Stop Bits:"
+                               Margin="0,0,0,0"
+                               HorizontalContentAlignment="Right"
+                           VerticalAlignment="Center"
+                               FontSize="14"
+                               FontWeight="Bold"
+                           Grid.Column="0"
+                           Grid.Row="4"/>
+
+                    <ComboBox Height="30"
+                                Width="100"
+                              Grid.Column="1"
+                              Grid.Row="4"
+                              Style="{StaticResource StandardCombobox_Style}"
+                              ItemsSource="{Binding Source={StaticResource stopBitEnum}}"
+                              SelectedItem="{Binding StopBits}"
+                              SelectedIndex="1"/>
+
+                    <Button Content="{Binding ConToggleButtonName, FallbackValue='Connect'}"
+                            Command="{Binding ConnectToPort}"
+                            Width="120"
+                            Height="30"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="5"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource StandardButton_Style}"/>
+
+                    <TextBlock Name="SerialConnectionErrorMessage"
+                                Text="{Binding SerialConnectErrorMessage}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Bottom"
+                                Foreground="Red"
+                                FontSize="15"
+                               Grid.Column="0"
+                               Grid.ColumnSpan="2"
+                               Grid.Row="5"
+                               Grid.RowSpan="2"
+                                Margin="0,0,0,5">
+                        <TextBlock.Background>
+                            <SolidColorBrush Color="Transparent"/>
+                        </TextBlock.Background>
+                    </TextBlock>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource StandardBorder_Style}"
+                    Width="350"
+                    HorizontalAlignment="Left"
+                    Margin="20,0,20,20"
+                    CornerRadius="0,0,20,20"
+                    BorderThickness="2,0,2,2"
+                    IsEnabled="{Binding CanPerformActions}"
+                    Visibility="{Binding CommType_Ethernet_Visibility}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="20"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Content="TCP/IP Settings"
+                           Grid.Row="0"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontWeight="Bold"
+                           FontSize="16"/>
+
+                    <!-- IP Type -->
+                    <Label Content="Target Type:"
+                           HorizontalContentAlignment="Right"
+                           VerticalAlignment="Center"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Grid.Column="0"
+                           Grid.Row="1"/>
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Column="1"
+                                Grid.Row="1">
+                        <RadioButton Content="Manual"
+                                             GroupName="TCP Settings"
+                                             Height="30"
+                                             Margin="10,0,0,0"
+                                             Style="{StaticResource StandardRadioButton_Style}"
+                                             IsChecked="{Binding TCPTargetType_Manual}"
+                                     Command="{Binding SetTCPTargetType_Manual}"/>
+                        <RadioButton Content="From List"
+                                             GroupName="TCP Settings"
+                                             Height="30"
+                                             Margin="20,0,0,0"
+                                             Style="{StaticResource StandardRadioButton_Style}"
+                                             IsChecked="{Binding TCPTargetType_FromList}"
+                                     Command="{Binding SetTCPTargetType_FromList}"/>
+                    </StackPanel>
+
+                    <!-- IP Box/List -->
+                    <Label Content="Target:"
+                            HorizontalContentAlignment="Right"
+                           VerticalAlignment="Center"
+                            FontSize="14"
+                            FontWeight="Bold"
+                           Grid.Column="0"
+                           Grid.Row="2"/>
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="2"
+                                Grid.Column="1">
+                        <TextBox Name="EthernetConnection_IP_Part_1" Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding EthernetConnection_IP_1}"
+                                         MaxLength="3"
+                                         TextChanged="EthernetConnection_IP_Part_1_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="0"
+                                 Visibility="{Binding TCPTargetType_Manual_Visibility}"/>
+                        <Border BorderBrush="Black"
+                                        BorderThickness="2"
+                                        Width="4"
+                                        Height="4"
+                                        Margin="5,0,5,0"
+                                Visibility="{Binding TCPTargetType_Manual_Visibility}"/>
+                        <TextBox Name="EthernetConnection_IP_Part_2" Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding EthernetConnection_IP_2}"
+                                         MaxLength="3"
+                                         TextChanged="EthernetConnection_IP_Part_2_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="1"
+                                 Visibility="{Binding TCPTargetType_Manual_Visibility}"/>
+                        <Border BorderBrush="Black"
+                                        BorderThickness="2"
+                                        Width="4"
+                                        Height="4"
+                                        Margin="5,0,5,0"
+                                Visibility="{Binding TCPTargetType_Manual_Visibility}"/>
+                        <TextBox Name="EthernetConnection_IP_Part_3" Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding EthernetConnection_IP_3}"
+                                         MaxLength="3"
+                                         TextChanged="EthernetConnection_IP_Part_3_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="2"
+                                 Visibility="{Binding TCPTargetType_Manual_Visibility}"/>
+                        <Border BorderBrush="Black"
+                                        BorderThickness="2"
+                                        Width="4"
+                                        Height="4"
+                                        Margin="5,0,5,0"
+                                Visibility="{Binding TCPTargetType_Manual_Visibility}"/>
+                        <TextBox Name="EthernetConnection_IP_Part_4"         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding EthernetConnection_IP_4}"
+                                         MaxLength="3"
+                                         TextChanged="EthernetConnection_IP_Part_4_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="3"
+                                         Visibility="{Binding TCPTargetType_Manual_Visibility}"/>
+
+                        <ComboBox Width="200"
+                                  Visibility="{Binding TCPTargetType_FromList_Visibility}"
+                                  ItemsSource="{Binding EthernetDevices}"
+                                  SelectedIndex="{Binding EthernetDevices_SelectedIndex}"
+                                  Height="25"
+                                  Style="{StaticResource DeviceCombobox_Style}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <!--Code to format the keypad list entries-->
+                                    <TextBlock>
+                                                <Run Text="{Binding DeviceName, Mode=OneWay, TargetNullValue='Unnamed'}"/>
+                                                <Run Text="("/>
+                                                <Run Text="{Binding IP, Mode=OneWay, TargetNullValue='##NO IP##'}"/>
+                                                <Run Text=")"/>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!-- COM PORT -->
+                    <Label Content="Port Number:"
+                           HorizontalContentAlignment="Right"
+                           VerticalAlignment="Center"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Grid.Column="0"
+                           Grid.Row="3"/>
+
+                    <TextBox Name="Ethernet_Port_Number" Height="30"
+                             Width="100"
+                             Grid.Column="1"
+                             Grid.Row="3"
+                             Text="{Binding EthernetConnection_Port}"
+                             Style="{StaticResource StandardTextbox_Style}"
+                             MaxLength="5"
+                             PreviewTextInput="OnlyNumeric"
+                             PreviewKeyDown="NoSpace"
+                             GotFocus="SelectAll"
+                             LostFocus="OnlyTo65535"
+                             PreviewMouseDown="HandleMouseDown"
+                             TabIndex="4"/>
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.ColumnSpan="2"
+                                Grid.Row="4"
+                                HorizontalAlignment="Center">
+
+                        <Button Content="{Binding ConToggleButtonName, FallbackValue='Connect'}"
+                            Command="{Binding ConnectToEthernet}"
+                            Width="120"
+                            Height="30"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="3"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource StandardButton_Style}"/>
+                    </StackPanel>
+
+                    <TextBlock Name="EthernetConnectionErrorMessage"
+                                Text="{Binding EthernetConnectErrorMessage}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Bottom"
+                                Foreground="Red"
+                                FontSize="15"
+                               Grid.Column="0"
+                               Grid.ColumnSpan="2"
+                               Grid.Row="5"
+                               Grid.RowSpan="2"
+                                Margin="0,0,0,5">
+                        <TextBlock.Background>
+                            <SolidColorBrush Color="Transparent"/>
+                        </TextBlock.Background>
+                    </TextBlock>
+                </Grid>
+            </Border>
+
+
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical"
+                    Grid.Column="1">
+            <Border Style="{StaticResource StandardBorder_Style}"
+                        Width="400"
+                        HorizontalAlignment="Right"
+                        Margin="0,20,20,0"
+                        IsEnabled="{Binding CanPerformActions}">
+                <StackPanel Orientation="Vertical">
+                    <Border>
+                        <StackPanel Orientation="Vertical">
+                            <Label Content="IP Configuration"
+                                   HorizontalContentAlignment="Center"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Margin="0,10,0,0"/>
+
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="10,10,0,0">
+                                <Label Content="Target:"
+                                       FontSize="14"
+                                       Width="100"
+                                       HorizontalContentAlignment="right"
+                                       FontWeight="Bold"/>
+                                <ComboBox Width="150"
+                                          Height="25"
+                                          Style="{StaticResource DeviceCombobox_Style}"
+                                          SelectedIndex="{Binding SelectedDevice}"
+                                          ItemsSource="{Binding DeviceList}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <!--Code to format the keypad list entries-->
+                                            <TextBlock>
+                                                <Run Text="{Binding NameAsString, Mode=OneWay, TargetNullValue='Unnamed'}"/>
+                                                <Run Text="("/>
+                                                <Run Text="{Binding AddressAsString, Mode=OneWay, TargetNullValue='##NO ADDRESS##'}"/>
+                                                <Run Text=")"/>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <Button Content="Search"
+                                        Height="25"
+                                        Width="60"
+                                        Margin="10,0,0,0"
+                                        Style="{StaticResource StandardButton_Style}"
+                                        Command="{Binding SearchForDevices}"/>
+                            </StackPanel>
+
+                            <Border BorderBrush="Black"
+                                    BorderThickness="1"
+                                    Margin="80,20,80,0"
+                                    Height="1"/>
+
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="10,10,0,0">
+                                <Label Content="IP Type:"
+                                       HorizontalContentAlignment="Right"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Width="100"/>
+                                <RadioButton Content="DHCP"
+                                             GroupName="IPType"
+                                             Height="30"
+                                             Margin="10,0,0,0"
+                                             Style="{StaticResource StandardRadioButton_Style}"
+                                             IsChecked="{Binding IsDHCP}"/>
+                                <RadioButton Content="STATIC"
+                                             GroupName="IPType"
+                                             Height="30"
+                                             Margin="30,0,0,0"
+                                             Style="{StaticResource StandardRadioButton_Style}"
+                                             IsChecked="{Binding IsStatic}"/>
+                            </StackPanel>
+
+                            <Border BorderBrush="Black"
+                                    BorderThickness="1"
+                                    Margin="80,10,80,0"
+                                    Height="1"/>
+
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="10,20,0,0">
+                                <Label Content="IP Address:"
+                                       Width="100"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       HorizontalContentAlignment="Right"/>
+                                <TextBox Name="IP_Part1"
+                                         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding IPAddressPart1}"
+                                         IsEnabled="{Binding IsStatic}"
+                                         MaxLength="3"
+                                         TextChanged="IP_1_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="5"/>
+                                <Border BorderBrush="Black"
+                                        BorderThickness="2"
+                                        Width="4"
+                                        Height="4"
+                                        Margin="5,0,5,0"/>
+                                <TextBox Name="IP_Part2"
+                                         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding IPAddressPart2}"
+                                         IsEnabled="{Binding IsStatic}"
+                                         MaxLength="3"
+                                         TextChanged="IP_2_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="6"/>
+                                <Border BorderBrush="Black"
+                                        BorderThickness="2"
+                                        Width="4"
+                                        Height="4"
+                                        Margin="5,0,5,0"/>
+                                <TextBox Name="IP_Part3"
+                                         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding IPAddressPart3}"
+                                         IsEnabled="{Binding IsStatic}"
+                                         MaxLength="3"
+                                         TextChanged="IP_3_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="7"/>
+                                <Border BorderBrush="Black"
+                                        BorderThickness="2"
+                                        Width="4"
+                                        Height="4"
+                                        Margin="5,0,5,0"/>
+                                <TextBox Name="IP_Part4"
+                                         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding IPAddressPart4}"
+                                         IsEnabled="{Binding IsStatic}"
+                                         MaxLength="3"
+                                         TextChanged="IP_4_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="8"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="10,10,0,0">
+                                <Label Content="Subnet Mask:"
+                                       Width="100"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       HorizontalContentAlignment="Right"/>
+                                <TextBox Name="Subnet_Part1"
+                                         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding SubnetPart1}"
+                                         IsEnabled="{Binding IsStatic}"
+                                         MaxLength="3"
+                                         TextChanged="Subnet_1_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="8"/>
+                                <Border BorderBrush="Black"
+                                        BorderThickness="2"
+                                        Width="4"
+                                        Height="4"
+                                        Margin="5,0,5,0"/>
+                                <TextBox Name="Subnet_Part2"
+                                         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding SubnetPart2}"
+                                         IsEnabled="{Binding IsStatic}"
+                                         MaxLength="3"
+                                         TextChanged="Subnet_2_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="9"/>
+                                <Border BorderBrush="Black"
+                                        BorderThickness="2"
+                                        Width="4"
+                                        Height="4"
+                                        Margin="5,0,5,0"/>
+                                <TextBox Name="Subnet_Part3"
+                                         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding SubnetPart3}"
+                                         IsEnabled="{Binding IsStatic}"
+                                         MaxLength="3"
+                                         TextChanged="Subnet_3_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="10"/>
+                                <Border BorderBrush="Black"
+                                        BorderThickness="2"
+                                        Width="4"
+                                        Height="4"
+                                        Margin="5,0,5,0"/>
+                                <TextBox Name="Subnet_Part4"
+                                         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding SubnetPart4}"
+                                         IsEnabled="{Binding IsStatic}"
+                                         MaxLength="3"
+                                         TextChanged="Subnet_4_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="11"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="10,10,0,0">
+                                <Label Content="Port Number:"
+                                       FontSize="14"
+                                       Width="100"
+                                       FontWeight="Bold"/>
+                                <TextBox Name="PortNum"
+                                         Width="70"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding PortNumber}"
+                                         TabIndex="12"
+                                         MaxLength="5"
+                                         PreviewTextInput="OnlyNumeric"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         LostFocus="OnlyTo65535"
+                                         PreviewMouseDown="HandleMouseDown"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0,20,0,0"
+                                        HorizontalAlignment="Center">
+                                <Button Content="Save IP Settings"
+                                        Width="130"
+                                        Height="30"
+                                        Margin="0,0,40,0"
+                                        Style="{StaticResource StandardButton_Style}"
+                                        Command="{Binding SaveIPSettings}"/>
+                                <Button Content="Retrieve IP Settings"
+                                        Width="130"
+                                        Height="30"
+                                        Style="{StaticResource StandardButton_Style}"
+                                        Command="{Binding RetrieveIPSettings}"/>
+                            </StackPanel>
+
+                            <TextBlock Name="IPConfigError"
+                                    Text="{Binding IPConfigErrorMessage}"
+                                    HorizontalAlignment="Center"
+                                    Foreground="Red"
+                                    FontSize="15"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Grid.Row="5"
+                                    Grid.RowSpan="2"
+                                    Margin="0,10,0,0">
+                                <TextBlock.Background>
+                                    <SolidColorBrush Color="Transparent"/>
+                                </TextBlock.Background>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+
+                    <Border BorderBrush="Black"
+                            BorderThickness="1"
+                            Margin="40,0,40,0"
+                            Visibility="{Binding MoreIPSettingsVisibility}"/>
+                    <Border>
+
+                        <StackPanel Orientation="Vertical"
+                                    Visibility="{Binding MoreIPSettingsVisibility}">
+                            <Label Content="Add Connected Devices"
+                                       HorizontalContentAlignment="Center"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,0"/>
+
+                            <Border>
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal"
+                                        Margin="10,5,0,0">
+                                        <Label Content="IP Address:"
+                                       Width="100"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       HorizontalContentAlignment="Right"/>
+                                        <TextBox Name="IPList_IP_Part1"
+                                         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding IPListEntry_IP1}"
+                                         MaxLength="3"
+                                         TextChanged="IPList_IP_1_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="13"/>
+                                        <Border BorderBrush="Black"
+                                        BorderThickness="2"
+                                        Width="4"
+                                        Height="4"
+                                        Margin="5,0,5,0"/>
+                                        <TextBox Name="IPList_IP_Part2"
+                                         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding IPListEntry_IP2}"
+                                         MaxLength="3"
+                                         TextChanged="IPList_IP_2_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="14"/>
+                                        <Border BorderBrush="Black"
+                                        BorderThickness="2"
+                                        Width="4"
+                                        Height="4"
+                                        Margin="5,0,5,0"/>
+                                        <TextBox Name="IPList_IP_Part3"
+                                         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding IPListEntry_IP3}"
+                                         MaxLength="3"
+                                         TextChanged="IPList_IP_3_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="15"/>
+                                        <Border BorderBrush="Black"
+                                        BorderThickness="2"
+                                        Width="4"
+                                        Height="4"
+                                        Margin="5,0,5,0"/>
+                                        <TextBox Name="IPList_IP_Part4"
+                                         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding IPListEntry_IP4}"
+                                         MaxLength="3"
+                                         TextChanged="IPList_IP_4_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="16"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal"
+                                        Margin="10,10,0,0">
+                                        <Label Content="Subnet Mask:"
+                                       Width="100"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       HorizontalContentAlignment="Right"/>
+                                        <TextBox Name="IPList_Subnet_Part1"
+                                         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding IPListEntry_Subnet1}"
+                                         MaxLength="3"
+                                         TextChanged="IPList_Subnet_1_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="17"/>
+                                        <Border BorderBrush="Black"
+                                        BorderThickness="2"
+                                        Width="4"
+                                        Height="4"
+                                        Margin="5,0,5,0"/>
+                                        <TextBox Name="IPList_Subnet_Part2"
+                                         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding IPListEntry_Subnet2}"
+                                         MaxLength="3"
+                                         TextChanged="IPList_Subnet_2_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="18"/>
+                                        <Border BorderBrush="Black"
+                                        BorderThickness="2"
+                                        Width="4"
+                                        Height="4"
+                                        Margin="5,0,5,0"/>
+                                        <TextBox Name="IPList_Subnet_Part3"
+                                         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding IPListEntry_Subnet3}"
+                                         MaxLength="3"
+                                         TextChanged="IPList_Subnet_3_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="19"/>
+                                        <Border BorderBrush="Black"
+                                        BorderThickness="2"
+                                        Width="4"
+                                        Height="4"
+                                        Margin="5,0,5,0"/>
+                                        <TextBox Name="IPList_Subnet_Part4"
+                                         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding IPListEntry_Subnet4}"
+                                         MaxLength="3"
+                                         TextChanged="IPList_Subnet_4_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="20"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal"
+                                        Margin="10,10,0,0">
+                                        <Label Content="Port Number:"
+                                       FontSize="14"
+                                       Width="100"
+                                       FontWeight="Bold"/>
+                                        <TextBox Name="IPList_PortNum"
+                                         Width="70"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding IPListEntry_Port}"
+                                         TabIndex="21"
+                                         MaxLength="5"
+                                         PreviewTextInput="OnlyNumeric"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         LostFocus="OnlyTo65535"
+                                         PreviewMouseDown="HandleMouseDown"/>
+
+                                        <Button Content="Add"
+                                        Width="50"
+                                        Height="30"
+                                        Margin="20,0,0,0"
+                                        Style="{StaticResource StandardButton_Style}"
+                                        Command="{Binding AddNewIPToList}"/>
+
+                                        <Button Content="Send List"
+                                        Width="70"
+                                        Height="30"
+                                        Margin="55,0,0,0"
+                                        Style="{StaticResource StandardButton_Style}"
+                                        Command="{Binding SendListToDevice}"/>
+                                    </StackPanel>
+
+                                    <TextBlock Name="IPListError"
+                                    Text="{Binding IPListConfigErrorMessage}"
+                                    HorizontalAlignment="Center"
+                                    Foreground="Red"
+                                    FontSize="15"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Grid.Row="5"
+                                    Grid.RowSpan="2"
+                                    Margin="0,0,0,0">
+                                        <TextBlock.Background>
+                                            <SolidColorBrush Color="Transparent"/>
+                                        </TextBlock.Background>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+
+                            <ListView Name="ListOfCommands"
+                              AlternationCount="2"
+                              SelectedIndex="{Binding SelectedEntry}"
+                              ItemsSource="{Binding IPList}"
+                              d:ItemsSource="{d:SampleData ItemCount=5}"
+                              Style="{StaticResource ListView_Style}"                  
+                              SelectionChanged="ListOfIPs_SelectionChanged"
+                              Grid.Row="3"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              Margin="20,0,20,0"
+                              MaxHeight="125">
+                                <ListView.View>
+                                    <GridView ColumnHeaderContainerStyle="{DynamicResource CustomHeaderStyle}">
+                                        <GridViewColumn Header="IP" Width="133" DisplayMemberBinding="{Binding IP_Data}"/>
+                                        <GridViewColumn Header="Subnet" Width="133" DisplayMemberBinding="{Binding Subnet_Data}"/>
+                                        <GridViewColumn Header="Port" Width="60" DisplayMemberBinding="{Binding Port_Data}"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0,0,20,10"
+                                        HorizontalAlignment="Right">
+                                <Button Height="25"
+                                    Width="35"
+                                    Style="{StaticResource ListViewButtonBottomLeft_Style}"
+                                    FontWeight="ExtraBold"
+                                    FontSize="20"
+                                    Margin="0,0,0,0"
+                                        Command="{Binding RemoveListItem}">
+                                    <TextBlock Text="-"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   Margin="0,-5,0,0"/>
+                                </Button>
+
+                                <Button Height="25"
+                                    Width="35"
+                                    Style="{StaticResource ListViewButtonBottomRight_Style}"
+                                    FontWeight="ExtraBold"
+                                    FontSize="20"
+                                        Command="{Binding AddListItem}">
+                                    <TextBlock Text="+"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   Margin="0,-5,0,0"/>
+                                </Button>
+                            </StackPanel>
+
+                            <Button Height="15"
+                                    Width="45"
+                                    HorizontalAlignment="Center"
+                                    Style="{StaticResource TabPullDownButton_Style}"
+                                    Command="{Binding HideExtraIPSettings}"
+                                    Margin="0,-15,0,0"
+                                    Visibility="{Binding MoreIPSettingsVisibility}">
+                                <Label Content="ʌ"
+                                       FontSize="10"
+                                       Margin="-5,-8,-5,-5"/>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                    <Border>
+                        <StackPanel Orientation="Vertical"
+                                    Margin="0,10,0,0"
+                                    IsEnabled="False"
+                                    Visibility="Collapsed">
+                            <Label Content="MAC Address Configuration"
+                                   HorizontalContentAlignment="Center"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Margin="0,10,0,0"/>
+
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="10,10,0,0">
+                                <Label Content="Password:"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Width="100"
+                                       HorizontalContentAlignment="Right"/>
+
+                                <TextBox Width="150"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"/>
+
+                                <Button Content="Check"
+                                        Width="55"
+                                        Height="30"
+                                        Style="{StaticResource StandardButton_Style}"
+                                        Margin="10,0,0,0"
+                                        IsEnabled="False"/>
+
+                                <TextBlock Name="IncorrectPassword"
+                                           Text=""
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Foreground="Red"
+                                           FontSize="15"
+                                           Margin="10,0,0,0">
+                                    <TextBlock.Background>
+                                        <SolidColorBrush Color="Transparent"/>
+                                    </TextBlock.Background>
+                                </TextBlock>
+                            </StackPanel>
+
+                            <Border BorderBrush="Black"
+                                    BorderThickness="1"
+                                    Margin="80,20,80,0"
+                                    Height="1"/>
+
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="10,20,0,0">
+                                <Label Content="Target:"
+                                       FontSize="14"
+                                       Width="100"
+                                       HorizontalContentAlignment="right"
+                                       FontWeight="Bold"/>
+                                <ComboBox Width="150"
+                                          Height="25"
+                                          Style="{StaticResource StandardCombobox_Style}"/>
+                                <Button Content="Search"
+                                        Height="25"
+                                        Width="60"
+                                        Style="{StaticResource StandardButton_Style}"
+                                        Margin="10,0,0,0"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal"
+                                    Margin="0,10,0,0">
+                                <Label Content="Address:"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       HorizontalContentAlignment="Right"
+                                       Width="80"/>
+
+                                <TextBox Width="30"
+                                         Height="30"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         MaxLength="2"
+                                         Style="{StaticResource StandardTextbox_Style}"/>
+
+                                <Label Content=":"
+                                       FontSize="18"
+                                       FontWeight="Bold"/>
+
+                                <TextBox Width="30"
+                                         Height="30"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         MaxLength="2"
+                                         Style="{StaticResource StandardTextbox_Style}"/>
+
+                                <Label Content=":"
+                                       FontSize="18"
+                                       FontWeight="Bold"/>
+
+                                <TextBox Width="30"
+                                         Height="30"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         MaxLength="2"
+                                         Style="{StaticResource StandardTextbox_Style}"/>
+
+                                <Label Content=":"
+                                       FontSize="18"
+                                       FontWeight="Bold"/>
+
+                                <TextBox Width="30"
+                                         Height="30"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         MaxLength="2"
+                                         Style="{StaticResource StandardTextbox_Style}"/>
+
+                                <Label Content=":"
+                                       FontSize="18"
+                                       FontWeight="Bold"/>
+
+                                <TextBox Width="30"
+                                         Height="30"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         MaxLength="2"
+                                         Style="{StaticResource StandardTextbox_Style}"/>
+
+                                <Label Content=":"
+                                       FontSize="18"
+                                       FontWeight="Bold"/>
+
+                                <TextBox Width="30"
+                                         Height="30"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         MaxLength="2"
+                                         Style="{StaticResource StandardTextbox_Style}"/>
+                            </StackPanel>
+
+                            <Button Content="Set MAC Address"
+                                    Width="120"
+                                    Height="30"
+                                    Margin="0,20,0,20"
+                                    Style="{StaticResource StandardButton_Style}"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <Button Height="15"
+                    Width="45"
+                    HorizontalAlignment="Center"
+                    Style="{StaticResource TabPullUpButton_Style}"
+                    Command="{Binding ShowExtraIPSettings}"
+                    Margin="20,0,0,0"
+                    Visibility="{Binding LessIPSettingsVisibility}">
+                <Label Content="V"
+                    FontSize="10"
+                    Margin="-5,-8,-5,-5"/>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -175,7 +175,6 @@ C:\Users\mason.edwards\Desktop\test\Apps\Blind-Config-Tool\Blind Config Tool\bin
 C:\Users\mason.edwards\Desktop\test\Apps\Blind-Config-Tool\Blind Config Tool\bin\Debug\Microsoft.Xaml.Behaviors.pdb
 C:\Users\mason.edwards\Desktop\test\Apps\Blind-Config-Tool\Blind Config Tool\bin\Debug\Microsoft.Xaml.Behaviors.xml
 C:\Users\mason.edwards\Desktop\test\Apps\Blind-Config-Tool\Blind Config Tool\obj\Debug\Blind Config Tool.csproj.AssemblyReference.cache
-C:\Users\mason.edwards\Desktop\test\Apps\Blind-Config-Tool\Blind Config Tool\obj\Debug\FAP Configurator.exe.config
 C:\Users\mason.edwards\Desktop\test\Apps\Blind-Config-Tool\Blind Config Tool\obj\Debug\RedesignFiles\MVVM\View\View_MotPage1.g.cs
 C:\Users\mason.edwards\Desktop\test\Apps\Blind-Config-Tool\Blind Config Tool\obj\Debug\RedesignFiles\MVVM\View\View_MotPage2.g.cs
 C:\Users\mason.edwards\Desktop\test\Apps\Blind-Config-Tool\Blind Config Tool\obj\Debug\RedesignFiles\MVVM\View\View_Motor.g.cs
@@ -202,3 +201,4 @@ C:\Users\mason.edwards\Desktop\test\Apps\Blind-Config-Tool\Blind Config Tool\obj
 C:\Users\mason.edwards\Desktop\test\Apps\Blind-Config-Tool\Blind Config Tool\obj\Debug\Blind Co.C12117C4.Up2Date
 C:\Users\mason.edwards\Desktop\test\Apps\Blind-Config-Tool\Blind Config Tool\obj\Debug\FAP Configurator.exe
 C:\Users\mason.edwards\Desktop\test\Apps\Blind-Config-Tool\Blind Config Tool\obj\Debug\FAP Configurator.pdb
+C:\Users\mason.edwards\Desktop\test\Apps\Blind-Config-Tool\Blind Config Tool\obj\Debug\FAP Configurator.exe.config

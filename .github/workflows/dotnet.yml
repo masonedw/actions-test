@@ -22,7 +22,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.1
     
     - name: Restore Packages
-      run: nuget restore WpfApp.sln
+      run: nuget restore WpfApp1.sln
     
     - name: Build solution
-      run: msbuild WpfApp.sln -t:rebuild -property:Configuration=Release
+      run: msbuild WpfApp1.sln -t:rebuild -property:Configuration=Release

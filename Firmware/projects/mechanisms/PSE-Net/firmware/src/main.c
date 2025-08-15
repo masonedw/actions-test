@@ -14,7 +14,7 @@
 int main(void) {
     /* Initialise watchdog and EEPROM */
     WDT_Disable();
-    WDT_TimeoutPeriodSet(FRAMEWORK_WATCHDOG_PERIOD);
+    WDT_TimeoutPeriodSet(FRAMEWORK_WA
 
     FRAMEWORK_init_pins();
 
@@ -31,10 +31,6 @@ int main(void) {
         FA_APP_Tasks();
 
         WDT_Clear();
-        
-
-
-
         
     }
 

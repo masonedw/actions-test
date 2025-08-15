@@ -24,7 +24,14 @@ jobs:
       - name: Check if project changed
         id: check_project
         run: |
-          if git diff --name-only ${{ github.base_ref }} | grep -q "^Firmware/projects/${{ matrix.project }}/"; then
+          # Use base_ref for PRs, or previous commit for push
+          if [ -n "${{ github.base_ref }}" ]; then
+            BASE=${{ github.base_ref }}
+          else
+            BASE=HEAD~1
+          fi
+
+          if git diff --name-only $BASE | grep -q "^Firmware/projects/${{ matrix.project }}/"; then
             echo "changed=true" >> $GITHUB_OUTPUT
           else
             echo "changed=false" >> $GITHUB_OUTPUT

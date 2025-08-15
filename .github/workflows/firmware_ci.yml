@@ -15,6 +15,7 @@ jobs:
       matrix:
         project:
           - fa_interface
+
     steps:
       # Step 1: Checkout the repository
       - uses: actions/checkout@v4
@@ -32,7 +33,8 @@ jobs:
       # Step 3: Build only if changes exist
       - name: Build ${{ matrix.project }}
         if: steps.check_project.outputs.changed == 'true'
-        run: docker run --rm \
-          -v ${{ github.workspace }}:/project \
-          ghcr.io/masonedw/fa-xc32:latest \
-          make -C Firmware/projects/${{ matrix.project }}.X/Makefile build
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/project \
+            ghcr.io/masonedw/fa-xc32:latest \
+            make -C Firmware/projects/${{ matrix.project }}.X/Makefile build

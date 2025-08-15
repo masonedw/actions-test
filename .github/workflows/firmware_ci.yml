@@ -19,6 +19,8 @@ jobs:
     steps:
       # Step 1: Checkout the repository
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       # Step 2: Determine if this matrix project has changes
       - name: Check if project changed

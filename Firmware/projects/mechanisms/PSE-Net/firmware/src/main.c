@@ -32,6 +32,9 @@ int main(void) {
 
         WDT_Clear();
         
+
+
+        
     }
 
     /* Execution should not come here during normal operation */

@@ -31,6 +31,7 @@ int main(void) {
         FA_APP_Tasks();
 
         WDT_Clear();
+        
 
     }
 

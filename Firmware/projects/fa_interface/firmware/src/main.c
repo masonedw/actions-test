@@ -37,8 +37,9 @@ extern void FA_APP_Tasks(void);
 
 int main(void) {
     /* Initialise watchdog and EEPROM */
+    
     WDT_Disable();
-    WDT_TimeoutPeriodSet(FRAMEWORK_WATCHDOG_P
+    WDT_TimeoutPeriodSet(FRAMEWORK_WATCHDOG_PERIOD);
 
     FRAMEWORK_init_pins();
 

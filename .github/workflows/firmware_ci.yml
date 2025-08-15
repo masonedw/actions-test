@@ -40,18 +40,18 @@ jobs:
           fi
 
             # Step 3: Build only if changes exist
-      - name: Debug container
-        run: |
-          docker run --rm \
-            -v ${{ github.workspace }}:/project \
-            ghcr.io/masonedw/fa-xc32:latest \
-            /bin/sh -c "ls -l /opt/microchip/xc32/bin && echo PATH=$PATH && which xc32-gcc"
-
-      # - name: Build ${{ matrix.project }}
-      #   if: steps.check_project.outputs.changed == 'true'
+      # - name: Debug container
       #   run: |
       #     docker run --rm \
       #       -v ${{ github.workspace }}:/project \
       #       ghcr.io/masonedw/fa-xc32:latest \
-      #       /opt/microchip/mplabx/v5.45/mplab_platform/bin/prjMakefilesGenerator.sh Firmware/projects/${{ matrix.project }}/firmware/${{ matrix.project }}.X && \
-      #       make -C Firmware/projects/${{ matrix.project }}/firmware/${{ matrix.project }}.X/ build
+      #       /bin/sh -c "ls -l /opt/microchip/xc32/bin && echo PATH=$PATH && which xc32-gcc"
+
+      - name: Build ${{ matrix.project }}
+        if: steps.check_project.outputs.changed == 'true'
+        run: |            
+            docker run --rm \
+            -v ${{ github.workspace }}:/project \
+            ghcr.io/masonedw/fa-xc32:latest \
+            /bin/sh -c "/opt/microchip/mplabx/v5.45/mplab_platform/bin/prjMakefilesGenerator.sh Firmware/projects/${{ matrix.project }}/firmware/${{ matrix.project }}.X && \
+                        make -C Firmware/projects/${{ matrix.project }}/firmware/${{ matrix.project }}.X/ build"

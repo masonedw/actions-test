@@ -54,6 +54,7 @@ jobs:
           docker run --rm \
             -v ${{ github.workspace }}:/project \
             ghcr.io/masonedw/fa-xc32:latest \
-            make -C Firmware/projects/${{ matrix.project }}/firmware/${PROJECT_BASENAME}.X/ build
+            /bin/sh -c "/opt/microchip/mplabx/v5.45/mplab_platform/bin/prjMakefilesGenerator.sh Firmware/projects/${{ matrix.project }}/firmware/${PROJECT_BASENAME}.X && \
+            make -C Firmware/projects/${{ matrix.project }}/firmware/${PROJECT_BASENAME}.X/ build"
 
 

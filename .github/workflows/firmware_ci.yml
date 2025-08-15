@@ -46,4 +46,4 @@ jobs:
           docker run --rm \
             -v ${{ github.workspace }}:/project \
             ghcr.io/masonedw/fa-xc32:latest \
-            make -C Firmware/projects/${{ matrix.project }}.X/Makefile build
+            make -C Firmware/projects/${{ matrix.project }}/firmware/${{ matrix.project }}.X/Makefile build

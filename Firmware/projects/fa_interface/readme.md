@@ -24,3 +24,4 @@ test!AA
 aA
 a
 a
+a

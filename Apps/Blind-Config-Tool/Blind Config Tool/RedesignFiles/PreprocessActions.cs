@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Blind_Config_Tool.Core.Converters;
 
 namespace Blind_Config_Tool.RedesignFiles
 {
@@ -305,9 +304,7 @@ namespace Blind_Config_Tool.RedesignFiles
 
         public static MessageStructure Preprocess_Program_Keypad_Commands(MessageStructure msg)
         {
-            // Start at the correct keypad command index.
-            // Set _scriptHandler.TimesRepeated to either the first modified value or the first button with value.
-            if (_scriptHandler.TimesRepeated == 0 && (_appData.UploadType == AppData.Upload_Type.UPLOAD_MODIFIED || _appData.UploadType == AppData.Upload_Type.UPLOAD_BUTTONS_WITH_VALUES))
+            if(_scriptHandler.TimesRepeated == 0 && (_appData.UploadType == AppData.Upload_Type.UPLOAD_MODIFIED || _appData.UploadType == AppData.Upload_Type.UPLOAD_BUTTONS_WITH_VALUES))
             {
                 for(int i = 0; i < _appData.KeypadCommandsList.Count; i++)
                 {
@@ -325,24 +322,47 @@ namespace Blind_Config_Tool.RedesignFiles
                 }
             }
 
-            // Button number
             msg.Data[0] = (byte)(_scriptHandler.TimesRepeated + 1);
 
             //ON PRESS
-            msg.Data[1] = (byte)MotorMoveCommandConverter.ConvertTo(_appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnPressAction); 
-            msg.Data[2] = _appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnPressTargetAsBytes[0];
+            msg.Data[1] = (byte)_appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnPressAction;      //Press
+            
+            if (_appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnPressTargetAsBytes[0] == 0 && _appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnPressTargetAsBytes[1] == 0)
+            {
+                msg.Data[2] = 0x01;
+            }
+            else
+            {
+                msg.Data[2] = _appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnPressTargetAsBytes[0];       //Press
+            }
             msg.Data[3] = _appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnPressTargetAsBytes[1];
 
             //ON HOLD
-            msg.Data[4] = (byte)MotorMoveCommandConverter.ConvertTo(_appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnHoldAction);
-            msg.Data[5] = _appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnHoldTargetAsBytes[0];
+            msg.Data[4] = (byte)_appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnHoldAction;       //Hold
+
+            if (_appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnHoldTargetAsBytes[0] == 0 && _appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnHoldTargetAsBytes[1] == 0)
+            {
+                msg.Data[5] = 0x01;
+            }
+            else
+            {
+                msg.Data[5] = _appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnHoldTargetAsBytes[0];        //Hold
+            }
             msg.Data[6] = _appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnHoldTargetAsBytes[1];
 
             //ON RELEASE
-            msg.Data[7] = (byte)MotorMoveCommandConverter.ConvertTo(_appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnReleaseAction);
-            msg.Data[8] = _appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnReleaseTargetAsBytes[0];
+            msg.Data[7] = (byte)_appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnReleaseAction;    //Release
+
+            if (_appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnReleaseTargetAsBytes[0] == 0 && _appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnReleaseTargetAsBytes[1] == 0)
+            {
+                msg.Data[8] = 0x01;
+            }
+            else
+            {
+                msg.Data[8] = _appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnReleaseTargetAsBytes[0];     //Release
+            }
             msg.Data[9] = _appData.KeypadCommandsList[_scriptHandler.TimesRepeated].OnReleaseTargetAsBytes[1];
-                
+
             byte[] addr = new byte[3] { 0x00, 0x00, 0x00 };
 
             //SETTING TARGET ADDRESS//

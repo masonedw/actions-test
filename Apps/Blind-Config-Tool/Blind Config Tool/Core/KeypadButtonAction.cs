@@ -15,12 +15,13 @@ namespace Blind_Config_Tool.Core
         GO_TO_IP = 0x04,
         NEXT_IP_UP = 0x05,
         NEXT_IP_DOWN = 0x06,
-        JOG_UP_MM = 0x07,
-        JOG_DOWN_MM = 0x08,
-        JOG_UP_PULSE = 0x09,
-        JOG_DOWN_PULSE = 0x0A,
-        GO_TO_PERCENT = 0x0B,
-        VISUAL_FEEDBACK = 0xC,
-        MOVE_TOGGLE = 0x0D
+        GO_TO_PULSE = 0x08,
+        JOG_UP_MS = 0x0A,
+        JOG_DOWN_MS = 0x0B,
+        JOG_UP_PULSE = 0x0C,
+        JOG_DOWN_PULSE = 0x0D,
+        GO_TO_PERCENT = 0x10,
+        TOGGLE = 0x24,
+        SET_IP = 0x25
     }
 }

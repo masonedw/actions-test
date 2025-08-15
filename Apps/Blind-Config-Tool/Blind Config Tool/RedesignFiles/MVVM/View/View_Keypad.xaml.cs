@@ -236,10 +236,13 @@ namespace Blind_Config_Tool.RedesignFiles.MVVM.View
                     minValue = 1;
                     maxValue = 16;
                     break;
-                case KeypadButtonAction.JOG_UP_MM:
+                case KeypadButtonAction.GO_TO_PULSE:
+                    maxValue = 65000;
+                    break;
+                case KeypadButtonAction.JOG_UP_MS:
                     maxValue = 250;
                     break;
-                case KeypadButtonAction.JOG_DOWN_MM:
+                case KeypadButtonAction.JOG_DOWN_MS:
                     maxValue = 250;
                     break;
                 case KeypadButtonAction.JOG_UP_PULSE:
@@ -250,6 +253,10 @@ namespace Blind_Config_Tool.RedesignFiles.MVVM.View
                     break;
                 case KeypadButtonAction.GO_TO_PERCENT:
                     maxValue = 100;
+                    break;
+                case KeypadButtonAction.SET_IP:
+                    minValue = 1;
+                    maxValue = 16;
                     break;
             }
 

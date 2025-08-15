@@ -1,0 +1,38 @@
+name: Firmware CI
+
+on:
+  pull_request:
+    paths:
+      - 'projects/**'
+  push:
+    paths:
+      - 'projects/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project:
+          - fa_interface
+    steps:
+      # Step 1: Checkout the repository
+      - uses: actions/checkout@v4
+
+      # Step 2: Determine if this matrix project has changes
+      - name: Check if project changed
+        id: check_project
+        run: |
+          if git diff --name-only ${{ github.base_ref }} | grep -q "^projects/${{ matrix.project }}/"; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      # Step 3: Build only if changes exist
+      - name: Build ${{ matrix.project }}
+        if: steps.check_project.outputs.changed == 'true'
+        run: docker run --rm \
+          -v ${{ github.workspace }}:/project \
+          ghcr.io/masonedw/fa-xc32:latest \
+          make -C Firmware/${{ matrix.project }} build

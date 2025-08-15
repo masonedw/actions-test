@@ -261,6 +261,7 @@ namespace Blind_Config_Tool.Core
             switch (action)
             {
                 case KeypadButtonAction.GO_TO_IP:
+                case KeypadButtonAction.SET_IP:
                     retVal = 1;
                     break;
             }
@@ -277,10 +278,13 @@ namespace Blind_Config_Tool.Core
                 case KeypadButtonAction.GO_TO_IP:
                     maxValue = 16;
                     break;
-                case KeypadButtonAction.JOG_UP_MM:
+                case KeypadButtonAction.GO_TO_PULSE:
+                    maxValue = 65000;
+                    break;
+                case KeypadButtonAction.JOG_UP_MS:
                     maxValue = 250;
                     break;
-                case KeypadButtonAction.JOG_DOWN_MM:
+                case KeypadButtonAction.JOG_DOWN_MS:
                     maxValue = 250;
                     break;
                 case KeypadButtonAction.JOG_UP_PULSE:
@@ -291,6 +295,9 @@ namespace Blind_Config_Tool.Core
                     break;
                 case KeypadButtonAction.GO_TO_PERCENT:
                     maxValue = 100;
+                    break;
+                case KeypadButtonAction.SET_IP:
+                    maxValue = 16;
                     break;
             }
 

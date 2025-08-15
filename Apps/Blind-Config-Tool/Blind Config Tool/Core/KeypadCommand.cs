@@ -1,11 +1,9 @@
-﻿using Blind_Config_Tool.Core.Converters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace Blind_Config_Tool.Core
 {
@@ -40,39 +38,6 @@ namespace Blind_Config_Tool.Core
             _onReleaseTargetBytes = new byte[2];
             _targetAddress = "FFFFFF";
             _targetMotor = TargetMotor.ALL_MOTORS;
-        }
-
-        /// <summary>
-        /// KeypadCommand Constructor that takes the values directly as parameters to construct the KeypadCommand
-        /// </summary>
-        /// <param name="CommandIndex">The index into the array of keypad commands. The value must without 1 minused from it.
-        ///     from it.</param>
-        /// <param name="OnPressActionValue">The on press action value in as a <see cref="MotorMoveCommand">MotorMoveCommand</see> enum.</param>
-        /// <param name="OnPressTargetValue">The on press targeting value. Should be a 16-bit value.</param>
-        /// <param name="OnHoldActionValue">The on hold action value in as a <see cref="MotorMoveCommand">MotorMoveCommand</see> enum.</param>
-        /// <param name="OnHoldTargetValue">The on hold targeting value. Should be a 16-bit value.</param>
-        /// <param name="OnReleaseActionValue">The on release action value in as a <see cref="MotorMoveCommand">MotorMoveCommand</see> enum.</param>
-        /// <param name="OnReleaseTargetValue">The on hold targeting value. Should be a 16-bit value.</param>
-        /// <param name="ChangedValue">A bool representing if the KeypadCommand should be listed as "Modified".</param>
-        /// <param name="TargetAddressValue">The address of the target.</param>
-        public KeypadCommand(int CommandIndex, MotorMoveCommand OnPressActionValue, string OnPressTargetValue,
-                             MotorMoveCommand OnHoldActionValue, string OnHoldTargetValue,
-                             MotorMoveCommand OnReleaseActionValue, string OnReleaseTargetValue,
-                             bool ChangedValue, string TargetAddressValue)
-        {
-            ID = CommandIndex;
-
-            OnPressTarget = OnPressTargetValue.Equals("65535") ? "0" : OnPressTargetValue;
-            OnPressAction = MotorMoveCommandConverter.ConvertBack(OnPressActionValue, _onPressTarget);
-
-            OnHoldTarget = OnHoldTargetValue.Equals("65535") ? "0" : OnHoldTargetValue;
-            OnHoldAction = MotorMoveCommandConverter.ConvertBack(OnHoldActionValue, _onHoldTarget);
-
-            OnReleaseTarget = OnHoldTargetValue.Equals("65535") ? "0" : OnHoldTargetValue;
-            OnReleaseAction = MotorMoveCommandConverter.ConvertBack(OnReleaseActionValue, _onReleaseTarget);
-
-            Changed = ChangedValue;
-            TargetAddress = TargetAddressValue;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -100,40 +100,6 @@ namespace Blind_Config_Tool.RedesignFiles.MVVM.View
             }
         }
 
-        private void EthernetConnection_IP_Part_1_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (EthernetConnection_IP_Part_1.Text.Length == 3)
-            {
-                EthernetConnection_IP_Part_2.Focus();
-            }
-        }
-
-        private void EthernetConnection_IP_Part_2_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (EthernetConnection_IP_Part_2.Text.Length == 3)
-            {
-                EthernetConnection_IP_Part_3.Focus();
-            }
-        }
-
-        private void EthernetConnection_IP_Part_3_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (EthernetConnection_IP_Part_3.Text.Length == 3)
-            {
-                EthernetConnection_IP_Part_4.Focus();
-            }
-        }
-
-        private void EthernetConnection_IP_Part_4_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (EthernetConnection_IP_Part_3.Text.Length == 3)
-            {
-                Ethernet_Port_Number.Focus();
-            }
-        }
-
-
-
         private void Subnet_1_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (Subnet_Part1.Text.Length == 3)

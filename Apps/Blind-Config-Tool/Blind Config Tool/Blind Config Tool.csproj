@@ -2,7 +2,6 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E7F22D55-B394-4C20-A585-F4AFA1E81821}</ProjectGuid>
@@ -30,7 +29,7 @@
     <ProductName>FAP Configurator</ProductName>
     <PublisherName>Future Automation</PublisherName>
     <MinimumRequiredVersion>3.0.0.0</MinimumRequiredVersion>
-    <ApplicationRevision>59</ApplicationRevision>
+    <ApplicationRevision>66</ApplicationRevision>
     <ApplicationVersion>3.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -131,11 +130,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Core\Converters\MotorMoveCommandConverter.cs" />
     <Compile Include="Core\Converters\SortTypeToStringConverter.cs" />
     <Compile Include="Core\CRCTable.cs" />
     <Compile Include="Core\IPListEntry.cs" />
-    <Compile Include="Core\MotorMoveCommand.cs" />
     <Compile Include="Core\ScriptCommands.cs" />
     <Compile Include="Core\SortType.cs" />
     <Compile Include="Core\CommunicationAction.cs" />

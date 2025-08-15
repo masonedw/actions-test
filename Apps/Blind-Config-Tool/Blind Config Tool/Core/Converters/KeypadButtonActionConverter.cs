@@ -19,17 +19,8 @@ namespace Blind_Config_Tool.Core.Converters
 
             switch(val) 
             {
-                case KeypadButtonAction.JOG_DOWN_MM:
-                    retVal = "Jog Up (MM)";
-                    break;
-                case KeypadButtonAction.JOG_UP_MM:
-                    retVal = "Jog Up (UP)";
-                    break;
-                case KeypadButtonAction.VISUAL_FEEDBACK:
-                    retVal = "Visual Feedback";
-                    break;
-                case KeypadButtonAction.MOVE_TOGGLE:
-                    retVal = "Move Toggle";
+                case KeypadButtonAction.SET_IP:
+                    retVal = "Set IP";
                     break;
                 case KeypadButtonAction.GO_TO_IP:
                     retVal = "To IP";
@@ -37,11 +28,20 @@ namespace Blind_Config_Tool.Core.Converters
                 case KeypadButtonAction.GO_TO_PERCENT:
                     retVal = "To Percent #";
                     break;
+                case KeypadButtonAction.GO_TO_PULSE:
+                    retVal = "To Pulse #";
+                    break;
                 case KeypadButtonAction.JOG_UP_PULSE:
                     retVal = "Jog Up (pulse)";
                     break;
                 case KeypadButtonAction.JOG_DOWN_PULSE:
                     retVal = "Jog Down (pulse)";
+                    break;
+                case KeypadButtonAction.JOG_UP_MS:
+                    retVal = "Jog Up (ms)";
+                    break;
+                case KeypadButtonAction.JOG_DOWN_MS:
+                    retVal = "Jog Down (ms)";
                     break;
                 case KeypadButtonAction.STOP:
                     retVal = "Stop";
@@ -61,6 +61,9 @@ namespace Blind_Config_Tool.Core.Converters
                 case KeypadButtonAction.NO_ACTION:
                     retVal = "N/A";
                     break;
+                case KeypadButtonAction.TOGGLE:
+                    retVal = "Toggle";
+                    break;
             }
 
             return retVal;
@@ -73,11 +76,17 @@ namespace Blind_Config_Tool.Core.Converters
 
             switch(strValue)
             {
+                case "Set IP":
+                    retVal = KeypadButtonAction.SET_IP;
+                    break;
                 case "To IP":
                     retVal = KeypadButtonAction.GO_TO_IP;
                     break;
                 case "To Percent #":
                     retVal = KeypadButtonAction.GO_TO_PERCENT;
+                    break;
+                case "To Pulse #":
+                    retVal = KeypadButtonAction.GO_TO_PULSE;
                     break;
                 case "Jog Up (pulse)":
                     retVal = KeypadButtonAction.JOG_UP_PULSE;
@@ -85,11 +94,11 @@ namespace Blind_Config_Tool.Core.Converters
                 case "Jog Down (pulse)":
                     retVal = KeypadButtonAction.JOG_DOWN_PULSE;
                     break;
-                case "Jog Up (MM)":
-                    retVal = KeypadButtonAction.JOG_UP_MM;
+                case "Jog Up (ms)":
+                    retVal = KeypadButtonAction.JOG_UP_MS;
                     break;
-                case "Jog Down (MM)":
-                    retVal = KeypadButtonAction.JOG_DOWN_MM;
+                case "Jog Down (ms)":
+                    retVal = KeypadButtonAction.JOG_DOWN_MS;
                     break;
                 case "Stop":
                     retVal = KeypadButtonAction.STOP;
@@ -109,11 +118,8 @@ namespace Blind_Config_Tool.Core.Converters
                 case "N/A":
                     retVal = KeypadButtonAction.NO_ACTION;
                     break;
-                case "Visual Feedback":
-                    retVal = KeypadButtonAction.VISUAL_FEEDBACK;
-                    break;
-                case "Move Toggle":
-                    retVal = KeypadButtonAction.MOVE_TOGGLE;
+                case "Toggle":
+                    retVal = KeypadButtonAction.TOGGLE;
                     break;
             }
 

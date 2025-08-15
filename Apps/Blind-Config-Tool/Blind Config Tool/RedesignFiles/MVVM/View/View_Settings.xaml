@@ -172,7 +172,7 @@
                              Grid.Row="2"
                              Style="{StaticResource StandardTextbox_Style}"
                              FontSize="15"
-                             Text="{Binding BaudRate, FallbackValue='9600'}"/>
+                             Text="{Binding BaudRate, FallbackValue='4800'}"/>
 
                     <!-- PARITY -->
                     <Label Content="Parity:"
@@ -310,35 +310,14 @@
                     <StackPanel Orientation="Horizontal"
                                 Grid.Row="2"
                                 Grid.Column="1">
-                        <TextBox Name="EthernetConnection_IP_Part_1" Width="30"
+                        <TextBox Width="30"
                                          Height="30"
                                          Style="{StaticResource StandardTextbox_Style}"
                                          HorizontalContentAlignment="Center"
                                          VerticalContentAlignment="Center"
                                          Text="{Binding EthernetConnection_IP_1}"
                                          MaxLength="3"
-                                         TextChanged="EthernetConnection_IP_Part_1_TextChanged"
-                                         PreviewTextInput="OnlyNumeric"
-                                         LostFocus="OnlyTo255"
-                                         PreviewKeyDown="NoSpace"
-                                         GotFocus="SelectAll"
-                                         PreviewMouseDown="HandleMouseDown"
-                                         TabIndex="0"
-                                 Visibility="{Binding TCPTargetType_Manual_Visibility}"/>
-                        <Border BorderBrush="Black"
-                                        BorderThickness="2"
-                                        Width="4"
-                                        Height="4"
-                                        Margin="5,0,5,0"
-                                Visibility="{Binding TCPTargetType_Manual_Visibility}"/>
-                        <TextBox Name="EthernetConnection_IP_Part_2" Width="30"
-                                         Height="30"
-                                         Style="{StaticResource StandardTextbox_Style}"
-                                         HorizontalContentAlignment="Center"
-                                         VerticalContentAlignment="Center"
-                                         Text="{Binding EthernetConnection_IP_2}"
-                                         MaxLength="3"
-                                         TextChanged="EthernetConnection_IP_Part_2_TextChanged"
+                                         TextChanged="IP_1_TextChanged"
                                          PreviewTextInput="OnlyNumeric"
                                          LostFocus="OnlyTo255"
                                          PreviewKeyDown="NoSpace"
@@ -352,14 +331,14 @@
                                         Height="4"
                                         Margin="5,0,5,0"
                                 Visibility="{Binding TCPTargetType_Manual_Visibility}"/>
-                        <TextBox Name="EthernetConnection_IP_Part_3" Width="30"
+                        <TextBox Width="30"
                                          Height="30"
                                          Style="{StaticResource StandardTextbox_Style}"
                                          HorizontalContentAlignment="Center"
                                          VerticalContentAlignment="Center"
-                                         Text="{Binding EthernetConnection_IP_3}"
+                                         Text="{Binding EthernetConnection_IP_2}"
                                          MaxLength="3"
-                                         TextChanged="EthernetConnection_IP_Part_3_TextChanged"
+                                         TextChanged="IP_2_TextChanged"
                                          PreviewTextInput="OnlyNumeric"
                                          LostFocus="OnlyTo255"
                                          PreviewKeyDown="NoSpace"
@@ -373,20 +352,41 @@
                                         Height="4"
                                         Margin="5,0,5,0"
                                 Visibility="{Binding TCPTargetType_Manual_Visibility}"/>
-                        <TextBox Name="EthernetConnection_IP_Part_4"         Width="30"
+                        <TextBox Width="30"
                                          Height="30"
                                          Style="{StaticResource StandardTextbox_Style}"
                                          HorizontalContentAlignment="Center"
                                          VerticalContentAlignment="Center"
-                                         Text="{Binding EthernetConnection_IP_4}"
+                                         Text="{Binding EthernetConnection_IP_3}"
                                          MaxLength="3"
-                                         TextChanged="EthernetConnection_IP_Part_4_TextChanged"
+                                         TextChanged="IP_3_TextChanged"
                                          PreviewTextInput="OnlyNumeric"
                                          LostFocus="OnlyTo255"
                                          PreviewKeyDown="NoSpace"
                                          GotFocus="SelectAll"
                                          PreviewMouseDown="HandleMouseDown"
                                          TabIndex="3"
+                                 Visibility="{Binding TCPTargetType_Manual_Visibility}"/>
+                        <Border BorderBrush="Black"
+                                        BorderThickness="2"
+                                        Width="4"
+                                        Height="4"
+                                        Margin="5,0,5,0"
+                                Visibility="{Binding TCPTargetType_Manual_Visibility}"/>
+                        <TextBox         Width="30"
+                                         Height="30"
+                                         Style="{StaticResource StandardTextbox_Style}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding EthernetConnection_IP_4}"
+                                         MaxLength="3"
+                                         TextChanged="IP_4_TextChanged"
+                                         PreviewTextInput="OnlyNumeric"
+                                         LostFocus="OnlyTo255"
+                                         PreviewKeyDown="NoSpace"
+                                         GotFocus="SelectAll"
+                                         PreviewMouseDown="HandleMouseDown"
+                                         TabIndex="4"
                                          Visibility="{Binding TCPTargetType_Manual_Visibility}"/>
 
                         <ComboBox Width="200"
@@ -418,19 +418,18 @@
                            Grid.Column="0"
                            Grid.Row="3"/>
 
-                    <TextBox Name="Ethernet_Port_Number" Height="30"
-                             Width="100"
-                             Grid.Column="1"
-                             Grid.Row="3"
+                    <TextBox Height="30"
+                                Width="100"
+                              Grid.Column="1"
+                              Grid.Row="3"
                              Text="{Binding EthernetConnection_Port}"
-                             Style="{StaticResource StandardTextbox_Style}"
-                             MaxLength="5"
-                             PreviewTextInput="OnlyNumeric"
-                             PreviewKeyDown="NoSpace"
-                             GotFocus="SelectAll"
-                             LostFocus="OnlyTo65535"
-                             PreviewMouseDown="HandleMouseDown"
-                             TabIndex="4"/>
+                              Style="{StaticResource StandardTextbox_Style}"
+                                MaxLength="5"
+                                PreviewTextInput="OnlyNumeric"
+                                PreviewKeyDown="NoSpace"
+                                GotFocus="SelectAll"
+                                LostFocus="OnlyTo65535"
+                                PreviewMouseDown="HandleMouseDown"/>
 
                     <StackPanel Orientation="Horizontal"
                                 Grid.ColumnSpan="2"
@@ -570,7 +569,7 @@
                                          PreviewKeyDown="NoSpace"
                                          GotFocus="SelectAll"
                                          PreviewMouseDown="HandleMouseDown"
-                                         TabIndex="5"/>
+                                         TabIndex="1"/>
                                 <Border BorderBrush="Black"
                                         BorderThickness="2"
                                         Width="4"
@@ -591,7 +590,7 @@
                                          PreviewKeyDown="NoSpace"
                                          GotFocus="SelectAll"
                                          PreviewMouseDown="HandleMouseDown"
-                                         TabIndex="6"/>
+                                         TabIndex="2"/>
                                 <Border BorderBrush="Black"
                                         BorderThickness="2"
                                         Width="4"
@@ -612,7 +611,7 @@
                                          PreviewKeyDown="NoSpace"
                                          GotFocus="SelectAll"
                                          PreviewMouseDown="HandleMouseDown"
-                                         TabIndex="7"/>
+                                         TabIndex="3"/>
                                 <Border BorderBrush="Black"
                                         BorderThickness="2"
                                         Width="4"
@@ -633,7 +632,7 @@
                                          PreviewKeyDown="NoSpace"
                                          GotFocus="SelectAll"
                                          PreviewMouseDown="HandleMouseDown"
-                                         TabIndex="8"/>
+                                         TabIndex="4"/>
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal"
@@ -658,7 +657,7 @@
                                          PreviewKeyDown="NoSpace"
                                          GotFocus="SelectAll"
                                          PreviewMouseDown="HandleMouseDown"
-                                         TabIndex="8"/>
+                                         TabIndex="5"/>
                                 <Border BorderBrush="Black"
                                         BorderThickness="2"
                                         Width="4"
@@ -679,7 +678,7 @@
                                          PreviewKeyDown="NoSpace"
                                          GotFocus="SelectAll"
                                          PreviewMouseDown="HandleMouseDown"
-                                         TabIndex="9"/>
+                                         TabIndex="6"/>
                                 <Border BorderBrush="Black"
                                         BorderThickness="2"
                                         Width="4"
@@ -700,7 +699,7 @@
                                          PreviewKeyDown="NoSpace"
                                          GotFocus="SelectAll"
                                          PreviewMouseDown="HandleMouseDown"
-                                         TabIndex="10"/>
+                                         TabIndex="7"/>
                                 <Border BorderBrush="Black"
                                         BorderThickness="2"
                                         Width="4"
@@ -721,7 +720,7 @@
                                          PreviewKeyDown="NoSpace"
                                          GotFocus="SelectAll"
                                          PreviewMouseDown="HandleMouseDown"
-                                         TabIndex="11"/>
+                                         TabIndex="8"/>
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal"
@@ -736,7 +735,7 @@
                                          Style="{StaticResource StandardTextbox_Style}"
                                          VerticalContentAlignment="Center"
                                          Text="{Binding PortNumber}"
-                                         TabIndex="12"
+                                         TabIndex="9"
                                          MaxLength="5"
                                          PreviewTextInput="OnlyNumeric"
                                          PreviewKeyDown="NoSpace"
@@ -815,7 +814,7 @@
                                          PreviewKeyDown="NoSpace"
                                          GotFocus="SelectAll"
                                          PreviewMouseDown="HandleMouseDown"
-                                         TabIndex="13"/>
+                                         TabIndex="10"/>
                                         <Border BorderBrush="Black"
                                         BorderThickness="2"
                                         Width="4"
@@ -835,7 +834,7 @@
                                          PreviewKeyDown="NoSpace"
                                          GotFocus="SelectAll"
                                          PreviewMouseDown="HandleMouseDown"
-                                         TabIndex="14"/>
+                                         TabIndex="11"/>
                                         <Border BorderBrush="Black"
                                         BorderThickness="2"
                                         Width="4"
@@ -855,7 +854,7 @@
                                          PreviewKeyDown="NoSpace"
                                          GotFocus="SelectAll"
                                          PreviewMouseDown="HandleMouseDown"
-                                         TabIndex="15"/>
+                                         TabIndex="12"/>
                                         <Border BorderBrush="Black"
                                         BorderThickness="2"
                                         Width="4"
@@ -875,7 +874,7 @@
                                          PreviewKeyDown="NoSpace"
                                          GotFocus="SelectAll"
                                          PreviewMouseDown="HandleMouseDown"
-                                         TabIndex="16"/>
+                                         TabIndex="13"/>
                                     </StackPanel>
 
                                     <StackPanel Orientation="Horizontal"
@@ -899,7 +898,7 @@
                                          PreviewKeyDown="NoSpace"
                                          GotFocus="SelectAll"
                                          PreviewMouseDown="HandleMouseDown"
-                                         TabIndex="17"/>
+                                         TabIndex="14"/>
                                         <Border BorderBrush="Black"
                                         BorderThickness="2"
                                         Width="4"
@@ -919,7 +918,7 @@
                                          PreviewKeyDown="NoSpace"
                                          GotFocus="SelectAll"
                                          PreviewMouseDown="HandleMouseDown"
-                                         TabIndex="18"/>
+                                         TabIndex="15"/>
                                         <Border BorderBrush="Black"
                                         BorderThickness="2"
                                         Width="4"
@@ -939,7 +938,7 @@
                                          PreviewKeyDown="NoSpace"
                                          GotFocus="SelectAll"
                                          PreviewMouseDown="HandleMouseDown"
-                                         TabIndex="19"/>
+                                         TabIndex="16"/>
                                         <Border BorderBrush="Black"
                                         BorderThickness="2"
                                         Width="4"
@@ -959,7 +958,7 @@
                                          PreviewKeyDown="NoSpace"
                                          GotFocus="SelectAll"
                                          PreviewMouseDown="HandleMouseDown"
-                                         TabIndex="20"/>
+                                         TabIndex="17"/>
                                     </StackPanel>
 
                                     <StackPanel Orientation="Horizontal"
@@ -974,7 +973,7 @@
                                          Style="{StaticResource StandardTextbox_Style}"
                                          VerticalContentAlignment="Center"
                                          Text="{Binding IPListEntry_Port}"
-                                         TabIndex="21"
+                                         TabIndex="18"
                                          MaxLength="5"
                                          PreviewTextInput="OnlyNumeric"
                                          PreviewKeyDown="NoSpace"

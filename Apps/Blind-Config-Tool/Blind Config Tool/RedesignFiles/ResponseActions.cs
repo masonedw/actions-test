@@ -1,9 +1,7 @@
 ﻿using Blind_Config_Tool.Core;
-using Blind_Config_Tool.Core.Converters;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -323,49 +321,39 @@ namespace Blind_Config_Tool.RedesignFiles
         {
             if (_scriptHandler.TimesRepeated < _appData.KeypadCommandsList.Count)
             {
-                // If the index we are on has changed, set it back to unchanged.
-                if (_appData.KeypadCommandsList[_scriptHandler.TimesRepeated].Changed)
-                {
-                    _appData.KeypadCommandsList[_scriptHandler.TimesRepeated].Changed = false;
-                }
-
-                switch (_appData.UploadType)
+                switch(_appData.UploadType)
                 {
                     case AppData.Upload_Type.UPLOAD_ALL:
-                        if (_scriptHandler.TimesRepeated < _appData.KeypadCommandsList.Count - 1)
+                        if (_scriptHandler.TimesRepeated < _appData.KeypadCommandsList.Count-1)
                         {
-                            //_scriptHandler.CurrentElement--;
-                            // Reset script
-                            _scriptHandler.CurrentElement = -1;
+                            _scriptHandler.CurrentElement--;
                         }
                         break;
                     case AppData.Upload_Type.UPLOAD_BUTTONS_WITH_VALUES:
-                        // Look for next button with value and set _scriptHandler.TimesRepeated to it, then reset script.
                         for (int i = _scriptHandler.TimesRepeated + 1; i < _appData.KeypadCommandsList.Count; i++)
                         {
                             if (_appData.KeypadCommandsList[i].OnPressAction != KeypadButtonAction.NO_ACTION || _appData.KeypadCommandsList[i].OnHoldAction != KeypadButtonAction.NO_ACTION || _appData.KeypadCommandsList[i].OnReleaseAction != KeypadButtonAction.NO_ACTION)
                             {
                                 _scriptHandler.TimesRepeated = i - 1;
-                                _scriptHandler.CurrentElement = -1;
-                                //_scriptHandler.CurrentElement -= 1;
-                                break;
+                                _scriptHandler.CurrentElement -= 1;
+                                return;
                             }
                         }
                         break;
                     default:
-                        // Look for next modified value and set _scriptHandler.TimesRepeated to it, then reset script.
                         for (int i = _scriptHandler.TimesRepeated + 1; i < _appData.KeypadCommandsList.Count; i++)
                         {
                             if (_appData.KeypadCommandsList[i].Changed)
                             {
                                 _scriptHandler.TimesRepeated = i - 1;
-                                _scriptHandler.CurrentElement = -1;
-                                //_scriptHandler.CurrentElement -= 1;
-                                break;
+                                _scriptHandler.CurrentElement -= 1;
+                                return;
                             }
                         }
                         break;
                 }
+
+                _appData.KeypadCommandsList[_scriptHandler.TimesRepeated].Changed = false;
             }
         }
 
@@ -436,16 +424,6 @@ namespace Blind_Config_Tool.RedesignFiles
 
         public static void Response_Retrieve_Keypad_Commands(MessageStructure msg)
         {
-            int commandIndex;
-            MotorMoveCommand onPressAction;
-            string onPressTarget;
-            MotorMoveCommand onHoldAction;
-            string onHoldTarget;
-            MotorMoveCommand onReleaseAction;
-            string onReleaseTarget;
-            string targetAddress;
-            bool changed = false;
-
             if (msg.Data[0] - 1 < 0)
             {
                 _appData.DisplayError($"Retrieved invalid button number {msg.Data[0]}. Button number must be greater than 0", "Invalid Button Number");
@@ -453,21 +431,69 @@ namespace Blind_Config_Tool.RedesignFiles
                 return;
             }
 
-            commandIndex = msg.Data[0];
-            onPressAction = (MotorMoveCommand)(msg.Data[1]);
-            onPressTarget = ((msg.Data[3] << 8) | msg.Data[2]).ToString();
-            onHoldAction = (MotorMoveCommand)(msg.Data[4]);
-            onHoldTarget = ((msg.Data[6] << 8) | msg.Data[5]).ToString();
-            onReleaseAction = (MotorMoveCommand)(msg.Data[7]);
-            onReleaseTarget = ((msg.Data[9] << 8) | msg.Data[8]).ToString();
-            //changed = msg.Data[0] - 1 < _appData.KeypadCommandsList.Count ? true : false;
-            changed = false;
-            targetAddress = BitConverter.ToString(new byte[] { msg.Data[10], msg.Data[11], msg.Data[12] }).Replace("-", "");
+            KeypadCommand newCommand = new KeypadCommand(msg.Data[0] - 1);
 
-            KeypadCommand newCommand = new KeypadCommand(commandIndex, onPressAction, onPressTarget,
-                                                         onHoldAction, onHoldTarget,
-                                                         onReleaseAction, onReleaseTarget,
-                                                         changed, targetAddress);
+            //ON PRESS
+            newCommand.OnPressAction = (KeypadButtonAction)(msg.Data[1]);    //On press
+
+            if (msg.Data[2] != 0xFF && msg.Data[3] != 0xFF)
+            {
+                newCommand.OnPressTarget = ((msg.Data[3] << 8) | msg.Data[2]).ToString();
+            }
+            else
+            {
+                newCommand.OnPressTarget = "0";
+            }
+
+            if (newCommand.OnPressAction == KeypadButtonAction.NO_ACTION)
+            {
+                newCommand.OnPressTarget = "0";
+            }
+
+            //ON HOLD
+            newCommand.OnHoldAction = (KeypadButtonAction)(msg.Data[4]);    //On Hold
+
+            if (msg.Data[5] != 0xFF && msg.Data[6] != 0xFF)
+            {
+                newCommand.OnHoldTarget = ((msg.Data[6] << 8) | msg.Data[5]).ToString();
+            }
+            else
+            {
+                newCommand.OnHoldTarget = "0";
+            }
+
+            if (newCommand.OnHoldAction == KeypadButtonAction.NO_ACTION)
+            {
+                newCommand.OnHoldTarget = "0";
+            }
+
+            //ON RELEASE
+            newCommand.OnReleaseAction = (KeypadButtonAction)(msg.Data[7]);    //On Release
+
+            if (msg.Data[8] != 0xFF && msg.Data[9] != 0xFF)
+            {
+                newCommand.OnReleaseTarget = ((msg.Data[9] << 8) | msg.Data[8]).ToString();
+            }
+            else
+            {
+                newCommand.OnReleaseTarget = "0";
+            }
+
+            if (newCommand.OnReleaseAction == KeypadButtonAction.NO_ACTION)
+            {
+                newCommand.OnReleaseTarget = "0";
+            }
+
+            //GETTING THE TARGET ADDRESS//
+            if (newCommand.TargetMotor == TargetMotor.SPECIFIC_MOTOR)
+            {
+                newCommand.TargetAddress = BitConverter.ToString(new byte[] { msg.Data[10], msg.Data[11], msg.Data[12] }).Replace("-", "");
+            }
+
+            if (msg.Data[0] - 1 < _appData.KeypadCommandsList.Count)
+            {
+                newCommand.Changed = true;
+            }
 
             _appData.AddNewKeypadCommand(newCommand);
 
@@ -475,6 +501,76 @@ namespace Blind_Config_Tool.RedesignFiles
             {
                 _scriptHandler.CurrentElement -= 1;
             }
+
+            //KeypadCommand newCommand = new KeypadCommand(msg.Data[0] - 1);
+            //GETTING BUTTON FUNCTION//
+            //newCommand.OnPressAction = (KeypadButtonAction)(msg.Data[1]);    //On press
+            //newCommand.OnHoldAction = (KeypadButtonAction)(msg.Data[8]);    //On Hold
+            //newCommand.OnReleaseAction = (KeypadButtonAction)(msg.Data[15]);    //On Release
+
+            //GETTING DIS OR POS//
+            //if (msg.Data[2] != 0xFF && msg.Data[3] != 0xFF)
+            //{
+            //    newCommand.OnPressTarget = ((msg.Data[3] << 8) | msg.Data[2]).ToString();
+            //}
+            //else
+            //{
+            //    newCommand.OnPressTarget = "0";
+            //}
+
+            //if (msg.Data[16] != 0xFF && msg.Data[17] != 0xFF)
+            //{
+            //    newCommand.OnHoldTarget = ((msg.Data[10] << 8) | msg.Data[9]).ToString();
+            //}
+            //else
+            //{
+            //    newCommand.OnHoldTarget = "0";
+            //}
+
+            //if (msg.Data[9] != 0xFF && msg.Data[10] != 0xFF)
+            //{
+            //    newCommand.OnReleaseTarget = ((msg.Data[17] << 8) | msg.Data[16]).ToString();
+            //}
+            //else
+            //{
+            //    newCommand.OnReleaseTarget = "0";
+            //}
+
+            //if (newCommand.OnPressAction == KeypadButtonAction.NO_ACTION)
+            //{
+            //    newCommand.OnPressTarget = "0";
+            //}
+
+            //if (newCommand.OnHoldAction == KeypadButtonAction.NO_ACTION)
+            //{
+            //    newCommand.OnHoldTarget = "0";
+            //}
+
+            //if (newCommand.OnReleaseAction == KeypadButtonAction.NO_ACTION)
+            //{
+            //    newCommand.OnReleaseTarget = "0";
+            //}
+
+            //GETTING TARGET TYPE//
+            //newCommand.TargetMotor = (TargetMotor)msg.Data[4];
+
+            ////GETTING THE TARGET ADDRESS//
+            //if (newCommand.TargetMotor == TargetMotor.SPECIFIC_MOTOR)
+            //{
+            //    newCommand.TargetAddress = BitConverter.ToString(new byte[] { msg.Data[7], msg.Data[6], msg.Data[5] }).Replace("-", "");
+            //}
+
+            //if (msg.Data[0] - 1 < _appData.KeypadCommandsList.Count)
+            //{
+            //    newCommand.Changed = true;
+            //}
+
+            //_appData.AddNewKeypadCommand(newCommand);
+
+            //if (_scriptHandler.TimesRepeated < _appData.KeypadCommandsList.Count - 1)
+            //{
+            //    _scriptHandler.CurrentElement -= 1;
+            //}
         }
 
         public static void Response_Retrieve_Group_Addresses(MessageStructure msg)

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="FA_Remote.exe" version="1.0.0.4" publicKeyToken="f3937f971183aa90" language="neutral" processorArchitecture="msil" type="win32" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="FA_Remote" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="FA_Remote.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          UAC Manifest Options
+          If you want to change the Windows User Account Control level replace the
+          requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+         If you want to utilize File and Registry Virtualization for backward
+         compatibility then delete the requestedExecutionLevel node.
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="FA_Remote.exe" size="37856">
+      <assemblyIdentity name="FA_Remote" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>4wKGpEBH3KtwwXpsX+7Q5wyB93ge/6dfDY96x1aI/MU=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="FA_Remote.exe.config" size="189">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>R+Wg8QGvQVHX8T0ta/qbhH1bXkqY0fRnS3wBV3J0bN8=</dsig:DigestValue>
+    </hash>
+  </file>
+<publisherIdentity name="CN=FUTURE\mark.archibald" issuerKeyHash="8d99f22d444ecea7e86d12ad485f3741aab65cee" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>5iAAFBhCzmsrOfOcxHv9QssTDxwv9IwRSoi7nPmq7mo=</DigestValue></Reference></SignedInfo><SignatureValue>eUz9tz0y2iW4cjhwkZA7ojm2avErfnIEX76adFwQXc3F0j3Xr/LkH0jSMiMIchlkq0a74pknBx58qeq9IGP1avwmq0sHxJgckXnuTbdFO5i7865/XdyzNiHnfoj8MKElc1EHK9uPgrs6M49UnwlUgX83vWxC5YntNhSxyWcbnuc=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>w2S19y7Q3efU76sh+7XRxu2weXs+TqR8DrH80iqf6ttq1ztnfAEc8CS+WBMUiqDdF23TWjwXVUSs/I2bObHu4t7gywdw380orL3It7LSjJBKDl2YjvSQCMfS/yPErl7uI1CW338avqRqoiq2dKn5l9u/4oO5lmicGqt+1yGCw50=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="6aeeaaf99cbb884a118cf42f1c0f13cb42fd7bc49cf3392b6bce4218140020e6" Description="" Url=""><as:assemblyIdentity name="FA_Remote.exe" version="1.0.0.4" publicKeyToken="f3937f971183aa90" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=FUTURE\mark.archibald</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>yi96+mFmIcFfvUFg9STgzq8jmOF8d76F0U18WmwXU7k=</DigestValue></Reference></SignedInfo><SignatureValue>ZGKK0oJPExifTt1eI/HELOmeYNjGZPotKsNllCn/JCJm2abBUwC40w7bFwOiEJspZgvJWBncuSFcX6CscorLUfSd7bpZQtAX3FeJnBWRWwCFoUr6DoaPi4N2lLfOyDMLnHYg3ScCOqmL/wV6KwIZxde/8KoYfxb+a4pgmW3WouM=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>w2S19y7Q3efU76sh+7XRxu2weXs+TqR8DrH80iqf6ttq1ztnfAEc8CS+WBMUiqDdF23TWjwXVUSs/I2bObHu4t7gywdw380orL3It7LSjJBKDl2YjvSQCMfS/yPErl7uI1CW338avqRqoiq2dKn5l9u/4oO5lmicGqt+1yGCw50=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB7TCCAVagAwIBAgIQezp6L6FK+LBPunzYwGoyzjANBgkqhkiG9w0BAQsFADA1MTMwMQYDVQQDHioARgBVAFQAVQBSAEUAXABtAGEAcgBrAC4AYQByAGMAaABpAGIAYQBsAGQwHhcNMjUwMTI5MTUxMjUzWhcNMjYwMTI5MjExMjUzWjA1MTMwMQYDVQQDHioARgBVAFQAVQBSAEUAXABtAGEAcgBrAC4AYQByAGMAaABpAGIAYQBsAGQwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMNktfcu0N3n1O+rIfu10cbtsHl7Pk6kfA6x/NIqn+rbatc7Z3wBHPAkvlgTFIqg3Rdt01o8F1VErPyNmzmx7uLe4MsHcN/NKKy9yLey0oyQSg5dmI70kAjH0v8jxK5e7iNQlt9/Gr6kaqIqtnSp+Zfbv+KDuZZonBqrftchgsOdAgMBAAEwDQYJKoZIhvcNAQELBQADgYEAiE4mL97vzRtv/3y+1SIaeeALbtxCP6RyOestA/EhOQY7AvNQJDywpIeujzXb8S9mJAjTyPyqywAvFZ4Qnc0o4Kofxk+2J4wpZ/676/4fkUKLg2UpQCvWT7HIEBcCLMY1TB+XLUf/XEU1CdEbImIfrZih0X2pE4Hw48czKFyinZs=</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>

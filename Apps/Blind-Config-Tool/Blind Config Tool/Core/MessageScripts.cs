@@ -550,8 +550,8 @@ namespace Blind_Config_Tool.Core
             PreprocessActions.Preprocess_Program_Keypad_Commands,
             new MessageStructure(
                 /*Command*/ new byte[] { (byte)ScriptCommands.KEYPAD_SET_COMMAND },
-                /*Length*/ new byte[] { 0xD },
-                /*Data*/ new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
+                /*Length*/ new byte[] { 0x5E },
+                /*Data*/ new byte[] { 0xFE, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
             ),
             /*Description*/ "Programming keypad buttons (1 of 8)",
             /*Response Command*/ new byte[] { (byte)ScriptCommands.ACK },
@@ -609,16 +609,16 @@ namespace Blind_Config_Tool.Core
         //    /*Description*/ "Retrieving button data"
         //);
 
-        //private static CommunicationAction _startRetrievingKeypadCommand_Part4 = new CommunicationAction(  //Part 4 of retrieving keypad commands
-        //    ElementActions.DO_NOTHING,
-        //    /*Target*/ Target.SPECIFIC_KEYPAD,
-        //    new MessageStructure(
-        //        /*Command*/ new byte[] { (byte)ScriptCommands.KEYPAD_SET_ID },
-        //        /*Length*/ new byte[] { 0x0C },
-        //        /*Data*/ new byte[] { }
-        //    ),
-        //    /*Description*/ "Retrieving button data"
-        //);
+        private static CommunicationAction _startRetrievingKeypadCommand_Part4 = new CommunicationAction(  //Part 4 of retrieving keypad commands
+            ElementActions.DO_NOTHING,
+            /*Target*/ Target.SPECIFIC_KEYPAD,
+            new MessageStructure(
+                /*Command*/ new byte[] { (byte)ScriptCommands.KEYPAD_SET_ID },
+                /*Length*/ new byte[] { 0x0C },
+                /*Data*/ new byte[] { }
+            ),
+            /*Description*/ "Retrieving button data"
+        );
 
         private static CommunicationAction _getKeypadCommand = new CommunicationAction(  //Retrieving a keypad command
             ElementActions.KEYPAD_GET_COMMANDS,
@@ -631,7 +631,7 @@ namespace Blind_Config_Tool.Core
             ),
             /*Description*/ "Retrieving button data (1 of 8)",
             /*Response Command*/ new byte[] { (byte)ScriptCommands.KEYPAD_POST_COMMAND },
-            /*Response Length*/ new byte[] { 0x19 },
+            /*Response Length*/ new byte[] { 0x18 },
             /*Response function*/ ResponseActions.Response_Retrieve_Keypad_Commands,
             /*Requires ack*/true
         );
@@ -760,7 +760,7 @@ namespace Blind_Config_Tool.Core
         private List<CommunicationAction> SetKeypadAddress = new List<CommunicationAction> { _setKeypadAddress };
         private List<CommunicationAction> SearchForKeypads = new List<CommunicationAction> { _searchForKeypads, _validateKeypads, _getAllKeypadNames};
         private List<CommunicationAction> ProgramKeypadCommands = new List<CommunicationAction> { _programKeypadCommand, /*_programKeypadGroup*/ };
-        private List<CommunicationAction> GetKeypadData = new List<CommunicationAction> {  _getKeypadCommand, };
+        private List<CommunicationAction> GetKeypadData = new List<CommunicationAction> { _startRetrievingKeypadCommand_Part4, _getKeypadCommand, /*_getKeypadGroupAddresses*/};
         private List<CommunicationAction> SetKeypadName = new List<CommunicationAction> { _setKeypadName, _getSingleKeypadName };
 
         private List<CommunicationAction> SetMACAddress = new List<CommunicationAction> { /*_startSettingMAC,*/ _setMACAddress };

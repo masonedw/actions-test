@@ -53,7 +53,7 @@ namespace Blind_Config_Tool.RedesignFiles.MVVM
             _viewModelSettings= new VM_Settings();
             _viewModelMotor= new VM_Motor();
 
-            SelectPage("Settings");
+            SelectPage("Motor");
         }
         #endregion
 

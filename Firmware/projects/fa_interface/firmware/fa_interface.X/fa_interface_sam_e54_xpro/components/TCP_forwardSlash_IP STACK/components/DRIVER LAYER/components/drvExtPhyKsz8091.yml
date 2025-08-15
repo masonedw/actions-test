@@ -1,0 +1,64 @@
+configVersion: 1.0.0
+componentName: drvExtPhyKsz8091
+coreVersion: 5.8.2
+device: ATSAME54P20A
+library: []
+dependency:
+- dependencyPackage: class com.microchip.mcc.harmony.HarmonyModule
+  name: drvExtPhyKsz8091
+  type: module
+  version: ''
+- dependencyPackage: ''
+  name: net
+  type: package
+  version: v3.11.0
+customDataClassName: com.microchip.utils_mh3.utils.persistence.CustomModuleData
+data:
+  attachments:
+    children:
+    - children:
+      - attributes:
+          id: libdrvExtPhyKsz8091
+        children:
+        - children:
+          - attributes:
+              id: targetComponentID
+            children:
+            - type: Value
+              value: drvGmac
+            type: String
+          - attributes:
+              id: targetAttachmentID
+            children:
+            - type: Value
+              value: GMAC_PHY_Dependency
+            type: String
+          type: Attributes
+        type: DirectCapability
+      type: Attachments
+    type: drvExtPhyKsz8091
+  elementPosition:
+    attributes:
+      id: DRIVER LAYER
+    children:
+    - children:
+      - attributes:
+          id: drvExtPhyKsz8091
+          x: '344'
+          y: '23'
+        type: ElementPosition
+      type: ElementPositions
+    type: ComponentGraph
+  symbols:
+    DRV_ETHPHY_MAC_NAME:
+      attributes:
+        id: DRV_ETHPHY_MAC_NAME
+      children:
+      - children:
+        - attributes:
+            id: drvExtPhyKsz8091
+            value: GMAC
+          type: Dynamic
+        type: Values
+      type: String
+  userData: {}

@@ -1,0 +1,72 @@
+configVersion: 1.0.0
+componentName: drvGmac
+coreVersion: 5.8.2
+device: ATSAME54P20A
+library: []
+dependency:
+- dependencyPackage: class com.microchip.mcc.harmony.HarmonyModule
+  name: drvGmac
+  type: module
+  version: ''
+- dependencyPackage: ''
+  name: net
+  type: package
+  version: v3.11.0
+customDataClassName: com.microchip.utils_mh3.utils.persistence.CustomModuleData
+data:
+  attachments:
+    children:
+    - children:
+      - attributes:
+          id: GMAC_PHY_Dependency
+        children:
+        - children:
+          - attributes:
+              id: targetComponentID
+            children:
+            - type: Value
+              value: drvExtPhyKsz8091
+            type: String
+          - attributes:
+              id: targetAttachmentID
+            children:
+            - type: Value
+              value: libdrvExtPhyKsz8091
+            type: String
+          type: Attributes
+        type: DirectDependency
+      type: Attachments
+    type: drvGmac
+  elementPosition:
+    attributes:
+      id: DRIVER LAYER
+    children:
+    - children:
+      - attributes:
+          id: drvGmac
+          x: '462'
+          y: '45'
+        type: ElementPosition
+      type: ElementPositions
+    type: ComponentGraph
+  symbols:
+    DRV_GMAC_HEAP_SIZE:
+      attributes:
+        id: DRV_GMAC_HEAP_SIZE
+      children:
+      - children:
+        - attributes:
+            id: visible
+          children:
+          - type: Value
+            value: 'true'
+          type: Boolean
+        type: Attributes
+      - children:
+        - attributes:
+            id: drvGmac
+            value: '19728'
+          type: Dynamic
+        type: Values
+      type: Integer
+  userData: {}

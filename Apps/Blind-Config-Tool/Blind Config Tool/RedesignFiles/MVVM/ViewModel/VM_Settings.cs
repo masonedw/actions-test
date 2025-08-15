@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading;
+using System.Linq;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -29,7 +31,7 @@ namespace Blind_Config_Tool.RedesignFiles.MVVM.ViewModel
         string _ethernetConnection_IP_2;
         string _ethernetConnection_IP_3;
         string _ethernetConnection_IP_4;
-        string _ethernetConnection_Port = "9670";
+        string _ethernetConnection_Port;
         string _ethernetConnectErrorMessage;
         ObservableCollection<EthernetDevice> _ethernetDevices = new ObservableCollection<EthernetDevice>();
         int _ethernetDevices_SelectedIndex = -1;
@@ -76,7 +78,7 @@ namespace Blind_Config_Tool.RedesignFiles.MVVM.ViewModel
         string _addIPEntry_Subnet_part3 = "255";
         string _addIPEntry_Subnet_part4 = "0";
 
-        string _addIPEntry_Port = "9670";
+        string _addIPEntry_Port = "9760";
 
         string _ipListConfigErrorMessage;
         int _selectedEntry;
@@ -186,6 +188,8 @@ namespace Blind_Config_Tool.RedesignFiles.MVVM.ViewModel
                     ConnectToEthernet1 = new RelayCommand(async o =>
                     {
                         EthernetConnectErrorMessage = "";
+
+                        EthernetDevices.Add(new EthernetDevice("Test", "12.34.56.78", "AA:BB:CC:DD:EE:FF"));
 
                         if (!int.TryParse(EthernetConnection_Port, out int port) || port < 0 || port > 65535)
                         {
@@ -734,7 +738,7 @@ namespace Blind_Config_Tool.RedesignFiles.MVVM.ViewModel
         {
             foreach(EthernetDevice existingDevice in _ethernetDevices)
             {
-                if (existingDevice.IP == device.IP)
+                if (existingDevice.macAddress == device.macAddress)
                 {
                     return;
                 }

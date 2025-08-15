@@ -1,0 +1,142 @@
+format_version: v1.0
+type: UniqueComponent
+attributes: {id: tc2}
+children:
+- type: Symbols
+  children:
+  - type: String
+    attributes: {id: COMPARE_SET_API_NAME}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: tc2, value: TC2_Timer16bitCompareSet}
+  - type: String
+    attributes: {id: COUNTER_GET_API_NAME}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: tc2, value: TC2_Timer16bitCounterGet}
+  - type: String
+    attributes: {id: PERIOD_SET_API_NAME}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: tc2, value: TC2_Timer16bitPeriodSet}
+  - type: Long
+    attributes: {id: TC_COMPARE_CC0}
+    children:
+    - type: Attributes
+      children:
+      - type: Long
+        attributes: {id: max}
+        children:
+        - {type: Value, value: '65535'}
+  - type: Long
+    attributes: {id: TC_COMPARE_CC1}
+    children:
+    - type: Attributes
+      children:
+      - type: Long
+        attributes: {id: max}
+        children:
+        - {type: Value, value: '24'}
+  - type: Long
+    attributes: {id: TC_COMPARE_PERIOD}
+    children:
+    - type: Attributes
+      children:
+      - type: Long
+        attributes: {id: max}
+        children:
+        - {type: Value, value: '65535'}
+  - type: Comment
+    attributes: {id: TC_COMPARE_PERIOD_COMMENT}
+    children:
+    - type: Attributes
+      children:
+      - type: String
+        attributes: {id: text}
+        children:
+        - {type: Value, value: '**** Compare Period is 409.6 us ****'}
+  - type: KeyValueSet
+    attributes: {id: TC_CTRLA_MODE}
+    children:
+    - type: Values
+      children:
+      - type: User
+        attributes: {value: '0'}
+  - type: KeyValueSet
+    attributes: {id: TC_CTRLA_PRESCALER}
+    children:
+    - type: Values
+      children:
+      - type: User
+        attributes: {value: '7'}
+  - type: Integer
+    attributes: {id: TC_FREQUENCY}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: tc2, value: '58593'}
+  - type: Comment
+    attributes: {id: TC_Resolution}
+    children:
+    - type: Attributes
+      children:
+      - type: String
+        attributes: {id: text}
+        children:
+        - {type: Value, value: '****Timer resolution is 17066.6666667 nS****'}
+  - type: Long
+    attributes: {id: TC_TIMER_PERIOD}
+    children:
+    - type: Attributes
+      children:
+      - type: Long
+        attributes: {id: max}
+        children:
+        - {type: Value, value: '65535'}
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: tc2, value: '2'}
+  - type: Float
+    attributes: {id: TC_TIMER_TIME_MS}
+    children:
+    - type: Attributes
+      children:
+      - type: Float
+        attributes: {id: max}
+        children:
+        - {type: Value, value: '1118481.1'}
+    - type: Values
+      children:
+      - type: User
+        attributes: {value: '51.0'}
+  - type: Combo
+    attributes: {id: TC_TIMER_UNIT}
+    children:
+    - type: Values
+      children:
+      - type: User
+        attributes: {value: microsecond}
+  - type: String
+    attributes: {id: TIMER_PERIOD_MAX}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: tc2, value: '65535'}
+  - type: Integer
+    attributes: {id: TIMER_WIDTH}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: tc2, value: '16'}
+- type: ElementPosition
+  attributes: {x: '750', y: '159', id: tc2}

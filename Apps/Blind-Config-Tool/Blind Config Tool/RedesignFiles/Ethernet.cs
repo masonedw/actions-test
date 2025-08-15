@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 
 namespace Blind_Config_Tool.RedesignFiles
 {

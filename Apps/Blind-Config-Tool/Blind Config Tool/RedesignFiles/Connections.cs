@@ -1,7 +1,9 @@
-﻿using Blind_Config_Tool.Core;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Threading;
+using Blind_Config_Tool.Core;
 
 namespace Blind_Config_Tool.RedesignFiles
 {
@@ -18,8 +20,6 @@ namespace Blind_Config_Tool.RedesignFiles
 
         Serial _serial;
         Ethernet _tcp;
-        private int dotCount = 0;
-        private DispatcherTimer _animate_text_timer;
 
         ConnectionMode ConnectionMode = ConnectionMode.SERIAL;
 
@@ -67,31 +67,11 @@ namespace Blind_Config_Tool.RedesignFiles
                 _serial.Close_Serial_Port();
             }
 
-            // Animate dots to show the app hasnt frozen
-            _animate_text_timer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromMilliseconds(500)
-            };
-
-            _animate_text_timer.Tick += (sender, e) =>
-            {
-                dotCount = (dotCount + 1) % 3; 
-                OnConnectionOpened?.Invoke("Attempting to connect." + new string('.', dotCount));
-            };
-
-            _animate_text_timer.Start();
-
             await _tcp.TryConnect(ip, port);
 
             if (_tcp.IsConnected)
             {
-                _animate_text_timer.Stop();
                 OnConnectionOpened?.Invoke($"Connected to device via TCP/IP (IP: {ip} | Port: {port})");
-            }
-            else
-            {
-                _animate_text_timer.Stop();
-                OnConnectionClosed?.Invoke();
             }
 
             return IsConnected;

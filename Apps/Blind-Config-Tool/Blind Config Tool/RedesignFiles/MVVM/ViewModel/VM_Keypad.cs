@@ -258,12 +258,12 @@ namespace Blind_Config_Tool.RedesignFiles.MVVM.ViewModel
 
                         if (CurrentCommandOnHoldTarget.StartsWith("0"))
                         {
-                            CurrentCommandOnHoldTarget = GetMinTarget(CurrentCommandOnHoldAction);
+                            CurrentCommandOnHoldTarget = GetMinTarget(CurrentCommandOnPressAction);
                         }
 
                         if (CurrentCommandOnReleaseTarget.StartsWith("0"))
                         {
-                            CurrentCommandOnReleaseTarget = GetMinTarget(CurrentCommandOnReleaseAction);
+                            CurrentCommandOnReleaseTarget = GetMinTarget(CurrentCommandOnPressAction);
                         }
 
                         ButtonConfigError = "";
@@ -399,15 +399,9 @@ namespace Blind_Config_Tool.RedesignFiles.MVVM.ViewModel
         {
             switch (action)
             {
-                case KeypadButtonAction.MOVE_UP:
-                case KeypadButtonAction.NEXT_IP_UP:
                 case KeypadButtonAction.GO_TO_IP:
+                case KeypadButtonAction.SET_IP:
                     return $"{1}";
-                case KeypadButtonAction.NEXT_IP_DOWN:
-                case KeypadButtonAction.MOVE_DOWN:
-                    return $"{0}";
-                
-
                 default:
                     return $"{0}";
             }

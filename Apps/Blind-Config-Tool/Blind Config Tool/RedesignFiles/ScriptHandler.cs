@@ -138,7 +138,6 @@ namespace Blind_Config_Tool.RedesignFiles
                 OnCommandDescriptionUpdated?.Invoke("Done!");
                 _appData.SetTimer(AppData.Timers.HIDE_COMMAND_DESC, Constants.CommandDescVisibleTime);
                 _currentMessage = Messages.NO_MESSAGE;
-                _repeatCounter = -1;
                 OnToggleCanClearState(true);
                 return;
             }
@@ -224,7 +223,6 @@ namespace Blind_Config_Tool.RedesignFiles
             OnCommandDescriptionUpdated?.Invoke($"Error during command: {_lastReceiveAction}");
             _appData.SetTimer(AppData.Timers.HIDE_COMMAND_DESC, Constants.CommandDescVisibleTime);
             _currentMessage = Messages.NO_MESSAGE;
-            _repeatCounter = -1;
             OnToggleCanClearState(true);
             TimesRepeated = 0;
         }
@@ -356,10 +354,8 @@ namespace Blind_Config_Tool.RedesignFiles
                     }
                     else
                     {
-                        // If we try to target all keypads in the list, but the repeat counter becomes equal to the list length,
-                        // we should just move on to the next script since we've gone though all the keypads.
                         validTarget = false;
-                    }   
+                    }
                     break;
                 case Target.SPECIFIC_KEYPAD:
                     targetAddress[0] = _appData.SelectedKeypad.AddressAsBytes[0];
@@ -655,28 +651,19 @@ namespace Blind_Config_Tool.RedesignFiles
         {
             int longestLength = 0;
 
-            // Get longest response length.
             List<MessageStructure> responses = new List<MessageStructure>();
+            //byte[] allBytes = AssistantFunctions.InvertBytes(_serial.ReadResponse());
             byte[] allBytes = _connector.ReadResponse();
 
-            if (allBytes == null) 
-                return responses;
-            // Get the longest length stored in the Communication Action. (Why is it possible for there to be more than one length?)
-            // And what is the length needed for, why would we need to minus the length of the message off of the amount of bytes we recieved.
-
-            //for (int i = 0; i < _action.Length.Length; i++)
-            //{
-            //    if ((byte)actionLength[i] > longestLength)
-            //    {
-            //        longestLength = (byte)actionLength[i];
-            //    }
-            //}
-
-            // If there is only one then this would be easier
-            //longestLength = actionLength[0];
+            for (int i = 0; i < _action.Length.Length; i++)
+            {
+                if ((byte)actionLength[i] > longestLength)
+                {
+                    longestLength = (byte)actionLength[i];
+                }
+            }
                 
-            // Check if its a valid response. There can be multiple valid response types (E.g Ack or Nack could be a valid response).
-            for (int i = 0; i < allBytes.Length; i++)
+            for (int i = 0; i < allBytes.Length - longestLength; i++)
             {
                 bool validType = false;
 
@@ -708,8 +695,7 @@ namespace Blind_Config_Tool.RedesignFiles
                     }
                 }
 
-                //If it's a nack message
-                else if (allBytes[i] == (byte)ScriptCommands.NACK && allBytes[i+1] == MessageStructure.staticBytes && _action.ElementName != ElementActions.MOTOR_VALIDATE && _action.ElementName != ElementActions.KEYPAD_VALIDATE)   
+                if (allBytes[i] == (byte)ScriptCommands.NACK && allBytes[i+1] == 0x0C && _action.ElementName != ElementActions.MOTOR_VALIDATE && _action.ElementName != ElementActions.KEYPAD_VALIDATE)   //If it's a nack message
                 {
                     byte[] addr = new byte[3] { allBytes[i+6], allBytes[i + 7], allBytes[i + 8] };
                     bool sameAddress = true;
